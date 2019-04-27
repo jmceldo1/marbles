@@ -1,0 +1,20 @@
+<script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.7.0.js"></script>
+<button id="btn-msg">Send Message</button>
+
+<script type="text/javascript">
+var airconsole = new AirConsole();
+
+// When we press our button, we send a message to the screen
+document.getElementById('btn-msg').addEventListener("click", function() {
+  airconsole.message(AirConsole.SCREEN, "How are you?");
+});
+
+// Listen for messages
+airconsole.onMessage = function(from, data) {
+
+  // Show message on device screen
+  var info = document.createElement('DIV');
+  info.innerHTML = data;
+  document.body.appendChild(info);
+};
+</script>
