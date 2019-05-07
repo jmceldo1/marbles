@@ -1,20 +1,395 @@
-<script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.7.0.js"></script>
-<button id="btn-msg">Send Message</button>
+<html>
+<head>
+  <script type="text/javascript"
+          src="https://www.airconsole.com/api/airconsole-1.3.0.js"></script>
+  <script type="text/javascript">
+    var airconsole;
+    var re = /images\/PNG-cards-1.3\/(.*)_of_/;
+    /**
+     * Sets up the communication to the screen.
+     */
+    function init() {
+      airconsole = new AirConsole({"orientation": "portrait"});
+      //document.getElementById("p1c0").addEventListener("touchstart", playCard);
 
-<script type="text/javascript">
-var airconsole = new AirConsole();
+      /*
+       * Checks if this device is part of the active game.
+       */
+      airconsole.onActivePlayersChange = function(player) {
+        var div = document.getElementById("player_id");
+        if (player !== undefined) {
+          div.innerHTML =  (["Player One", "Player Two", "Player Three", "Player Four"][player]);
+          div.style.color = (["#3531ff", "#fe0000", "#fcff2f", "#009901"][player]);
+        } else {
+          div.innerHTML = "It's a 2 player game!!";
+        }
+      };
 
-// When we press our button, we send a message to the screen
-document.getElementById('btn-msg').addEventListener("click", function() {
-  airconsole.message(AirConsole.SCREEN, "How are you?");
-});
+      /*
+       * Makes the device vibrate if the screen says so.
+       */
+      airconsole.onMessage = function(from, data) {
+        if (from == AirConsole.SCREEN && data.messageType !== undefined) {
+          if (data.messageType === "Deal" && data.hand !== undefined) {
+            for(i=0; i<data.hand.length; i++) {
+              document.getElementById("p1c" + i).style.backgroundImage="url(images/PNG-cards-1.3/" + data.hand[i] + ".png)";
+            }
+            if (data.hand.length === 4) {
+              // document.getElementById("p1c4").style.backgroundImage="url(images/PNG-cards-1.3/haas.jpg)";
+              document.getElementById("p1c4").style.backgroundImage="none";
+            }
+          } else if (data.messageType === "Clear") {
+            var cardElements = document.getElementsByClassName("cards");
+            var i; j = cardElements.length;
+            for (var i = 0; i < j; i++) {
+              cardElements[i].style.backgroundImage="url(images/PNG-cards-1.3/haas.jpg)";
+           }
+          }
+          navigator.vibrate(data.vibrate);
+          console.log("Vibrating: " + data.vibrate);
+        }
+      };
+    }
 
-// Listen for messages
-airconsole.onMessage = function(from, data) {
+    /**
+     * Tells the screen to deal the paddle of this player.
+     * @param amount
+     */
+    function deal() {
+      airconsole.message(AirConsole.SCREEN, {messageType: "Deal"})
+    }
 
-  // Show message on device screen
-  var info = document.createElement('DIV');
-  info.innerHTML = data;
-  document.body.appendChild(info);
-};
-</script>
+    // ************************
+    //  Card Listners
+    // ************************
+
+    function card0Listener() {
+      let element = document.getElementById("p1c0");
+      var cardValue = getCardValueFromElement(element);
+      makeMove(cardValue, element);
+    }
+
+    function card1Listener() {
+      let element = document.getElementById("p1c1");
+      var cardValue = getCardValueFromElement(element);
+      makeMove(cardValue, element);
+    }
+
+    function card2Listener() {
+      let element = document.getElementById("p1c2");
+      var cardValue = getCardValueFromElement(element);
+      makeMove(cardValue, element);
+    }
+
+    function card3Listener() {
+      let element = document.getElementById("p1c3");
+      var cardValue = getCardValueFromElement(element);
+      makeMove(cardValue, element);
+    }
+
+    function card4Listener() {
+      let element = document.getElementById("p1c4");
+      var cardValue = getCardValueFromElement(element);
+      makeMove(cardValue, element);
+    }
+
+      function getCardValueFromElement(element) {
+        var backGroundImageUrl = element.style.backgroundImage;
+        if (backGroundImageUrl !== undefined) {
+          var cardValueMatcher = backGroundImageUrl.match(re);
+          if (cardValueMatcher !== undefined && cardValueMatcher !== null) {
+            element.style.backgroundImage = "none";
+            return cardValueMatcher[1];
+          }
+        }
+      }
+
+      function makeMove(cardValue, element) {
+        if (cardValue !== undefined) {
+          airconsole.message(AirConsole.SCREEN, {messageType:"Move", cValue: cardValue});
+          element.style.backgroundImage = "none";
+          // Select marble and make move
+          return true;
+        }
+        return false;
+      }
+
+
+  </script>
+  <style type="text/css">
+    @font-face {
+      font-family: 'PressStart2P';
+      src: url('PressStart2P.ttf') format('truetype');
+      text-align: center;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0px;
+      font-family: 'PressStart2P', sans-serif;
+      color: white;
+      text-align: center;
+      background-color: black;
+    }
+
+    .button {
+      display: block;
+      height: 5%;
+      width: 98%;
+      background-color: #222;
+      position: relative;
+    }
+
+    .button_label {
+      position: absolute;
+      left: 0px;
+      width: 100%;
+      top: 50%;
+      margin-top: -6px;
+    }
+
+    #player_id {
+      position: block;
+      top: 1%;
+      left: 0%;
+      width: 100%;
+      margin-top: 50px;
+      color: #777;
+    }
+  </style>
+</head>
+<body onload="init()">
+<div style="height: 1%"></div>
+<div id="player_id">It's a 2 player game</div>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;height:95vw; width:95vw}
+.tg td{padding:9px 9px;border-style:solid;border-width:1px;border-color:black;}
+.tg th{padding:9px 9px;border-style:solid;border-width:1px;border-color:black;}
+.tg .tg-2n01{background-color:#3531ff;border-color:inherit} /* Blue game squares */
+.tg .tg-6gc2{background-color:#986536;border-color:inherit} /* Normal brown game squares */
+.tg .tg-kwiq{color:#000000;border-color:inherit} /* Non-game squares */
+.tg .tg-0pky{border-color:inherit;} /* Merged blank cells */
+.tg .tg-tw5s{background-color:#fe0000;border-color:inherit} /* Red game squares */
+.tg .tg-agym{background-color:#fcff2f;border-color:inherit} /* Yellow game squares */
+.tg .tg-706m{background-color:#009901;border-color:inherit} /* Green game squares */
+</style>
+<table class="tg">
+  <tr>
+    <td class="tg-0pky" colspan="5"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-agym"></td>
+    <td class="tg-0pky" colspan="5"></th>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-tw5s"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-tw5s"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-agym"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-agym"></td>
+    <td class="tg-kwiq"></td>
+    <td class="tg-agym"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" colspan="5"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-agym"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky" colspan="5"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-tw5s"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-tw5s"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-agym"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-agym"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-agym"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" colspan="5"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-agym"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky" colspan="5"></td>
+  </tr>
+  <tr>
+    <td class="tg-tw5s"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+  </tr>
+  <tr>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+  </tr>
+  <tr>
+    <td class="tg-6gc2"></td>
+    <td class="tg-tw5s"></td>
+    <td class="tg-tw5s"></td>
+    <td class="tg-tw5s"></td>
+    <td class="tg-tw5s"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-706m"></td>
+    <td class="tg-706m"></td>
+    <td class="tg-706m"></td>
+    <td class="tg-706m"></td>
+    <td class="tg-6gc2"></td>
+  </tr>
+  <tr>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+  </tr>
+  <tr>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-706m"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" colspan="5"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-2n01"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky" colspan="5"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-2n01"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-2n01"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-2n01"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-706m"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-706m"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" colspan="5"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-2n01"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky" colspan="5"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-2n01"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-2n01"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-2n01"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-706m"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-706m"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" colspan="5"></td>
+    <td class="tg-2n01"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky" colspan="5"></td>
+  </tr>
+</table>
+<div class=button ontouchstart="deal()">
+  <div class="button_label">Deal</div>
+</div>
+<div style="height: 1%"></div>
+<button id="p1c0" ontouchstart="card0Listener()" alt="No Card" class="cards" style="width:16%;height:20%;display:inline-block;background-image: url(images/PNG-cards-1.3/haas.jpg);background-size:100% 100%;"></button>
+<button id="p1c1" ontouchstart="card1Listener()" alt="No Card" class="cards" style="width:16%;height:20%;display:inline-block;background-image: url(images/PNG-cards-1.3/haas.jpg);background-size:100% 100%;"></div>
+<button id="p1c2" ontouchstart="card2Listener()" alt="No Card" class="cards" style="width:16%;height:20%;display:inline-block;background-image: url(images/PNG-cards-1.3/haas.jpg);background-size:100% 100%;"></div>
+<button id="p1c3" ontouchstart="card3Listener()" alt="No Card" class="cards" style="width:16%;height:20%;display:inline-block;background-image: url(images/PNG-cards-1.3/haas.jpg);background-size:100% 100%;"></div>
+<button id="p1c4" ontouchstart="card4Listener()" alt="No Card" class="cards" style="width:16%;height:20%;display:inline-block;background-image: url(images/PNG-cards-1.3/haas.jpg);background-size:100% 100%;"></div>
+</body>
+</html>
