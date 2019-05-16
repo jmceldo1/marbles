@@ -1,10 +1,13 @@
 <html>
   <head>
+    <link href="ScreenStyleSheet.css" rel="stylesheet" type="text/css">
+
     <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.3.0.js"></script>
     <script type="text/javascript">
       var airconsole;
       var canvas;
       var cards = [];
+      var numberOfPlayers = 2;
       var p1 = [];
       var p2 = [];
       var p3 = [];
@@ -37,6 +40,7 @@
             if (data.messageType === "Deal") {
               dealPlease();
             } else if (data.messageType === "Move") {
+              yourTurn(player);
               console.log(data.cValue);
             }
 
@@ -53,11 +57,12 @@
         var connected_controllers = airconsole.getControllerDeviceIds();
         // Only update if the game didn't have active players.
         if (active_players.length == 0) {
-          if (connected_controllers.length >= 2) {
+          if (connected_controllers.length >= numberOfPlayers) {
             // Enough controller devices connected to start the game.
             // Setting the first 2 controllers to active players.
-            airconsole.setActivePlayers(2);
+            airconsole.setActivePlayers(numberOfPlayers);
             document.getElementById("wait").innerHTML = "";
+            yourTurn(0);
           } else if (connected_controllers.length == 1) {
             document.getElementById("wait").innerHTML = "Need 1 more player!";
           } else if (connected_controllers.length == 0) {
@@ -150,25 +155,21 @@
           switch (pNo) {
             case 0:
               var cardVal = cards.pop().face;
-              //document.getElementById("p1c" + cardNo).src="images/PNG-cards-1.3/" + cardVal + fileType;
               p1[cardNo] = cardVal;
               pNo++;
               break;
             case 1:
               var cardVal = cards.pop().face;
-              //document.getElementById("p2c" + cardNo).src="images/PNG-cards-1.3/" + cardVal + fileType;
               p2[cardNo] = cardVal;
               pNo++;
               break;
             case 2:
               var cardVal = cards.pop().face;
-              //document.getElementById("p3c" + cardNo).src="images/PNG-cards-1.3/" + cardVal + fileType;
               p3[cardNo] = cardVal;
               pNo++;
               break;
             default:
               var cardVal = cards.pop().face;
-              //document.getElementById("p4c" + cardNo).src="images/PNG-cards-1.3/" + cardVal + fileType;
               p4[cardNo] = cardVal;
               pNo = 0;
               cardNo++;
@@ -186,26 +187,15 @@
       }
 
       function dealPlease() {
-
-        // var deckElmnt = document.getElementById("demo");
-
         if (cards.length === 0){
           clearHands();
           shuffle(cards);
-          // deckElmnt.innerHTML = "Remaining cards in Deck:" + cards.length;
         }
         else if (cards.length === 52) {
-          // clearHands();
           dealCards(20);
-          // deckElmnt.innerHTML = "Remaining cards in Deck:" + cards.length;
-
         }
-
         else {
-          // clearHands();
           dealCards(16);
-          // deckElmnt.innerHTML = "Remaining cards in Deck:" + cards.length;
-
         }
       }
 
@@ -215,88 +205,14 @@
           p3 = [];
           p4 = [];
           airconsole.broadcast({messageType: "Clear"})
-          // var cardElements = document.getElementsByClassName("cards");
-          // var i; j = cardElements.length;
-          // for (var i = 0; i < j; i++) {
-          //   cardElements[i].src = "images/PNG-cards-1.3/haas.jpg";
-          // }
         }
 
-      /**
-       * Drawing the game scene. Nothing Game Console specific.
-       * @param clear
-       */
-      // function draw(clear) {
-      //   // Draw
-      //   var ctx = canvas.getContext("2d");
-      //   var zoom = canvas.clientHeight / 100;
-      //   function c(x) {
-      //     x *= zoom;
-      //     return x | 0; // round
-      //   }
-      //   ctx.fillStyle = clear ? 'black' : 'white';
-      //
-      //   ctx.fillRect(c(paddles[0].pos.x - 1),c(paddles[0].pos.y - 10),
-      //                c(2), c(20));
-      //   ctx.fillRect(c(paddles[1].pos.x - 1),c(paddles[1].pos.y - 10),
-      //                c(2), c(20));
-      //
-      //   ctx.beginPath();
-      //   ctx.arc(c(ball.pos.x), c(ball.pos.y), c(clear ? 3 : 2), 0,
-      //           2 * Math.PI, false);
-      //   ctx.fill();
-      //   ctx.closePath();
-      // }
+        function yourTurn(recentlyPlayedPlayerNumber) {
+          var nextPlayer = (recentlyPlayedPlayerNumber + 1) % numberOfPlayers;
+          airconsole.message(airconsole.convertPlayerNumberToDeviceId(nextPlayer), {messageType: "YourTurn"});
+        }
+
     </script>
-    <style type="text/css">
-      @font-face {
-        font-family: 'PressStart2P';
-        src: url('PressStart2P.ttf') format('truetype');
-      }
-
-      html, body {
-        height: 100%;
-        margin: 0px;
-        font-family: 'PressStart2P', sans-serif;
-        color: white;
-        text-align: center;
-      }
-
-      .game {
-        background-color: black;
-        top: 50%;
-        margin-top: -25%;
-        padding-bottom: 50%;
-        overflow: hidden;
-        position: relative;
-      }
-
-      #canvas {
-        position: absolute;
-        top: 0px;
-        left:0px;
-        width: 100%;
-        height: 100%;
-      }
-
-      #score {
-        position: absolute;
-        top: 10%;
-        left: 0px;
-        width: 100%;
-        font-size: 48px;
-      }
-
-      #wait {
-        position: absolute;
-        top: 10%;
-        margin-top: 80px;
-        left: 0px;
-        width: 100%;
-        font-size: 24px;
-        color: lime;
-      }
-    </style>
   </head>
   <body onload="init()">
     <div class="game">

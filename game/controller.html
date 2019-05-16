@@ -1,16 +1,18 @@
 <html>
 <head>
+  <link href="ControllerStyleSheet.css" rel="stylesheet" type="text/css">
+
   <script type="text/javascript"
           src="https://www.airconsole.com/api/airconsole-1.3.0.js"></script>
   <script type="text/javascript">
     var airconsole;
     var re = /images\/PNG-cards-1.3\/(.*)_of_/;
+    var myTurn = false;
     /**
      * Sets up the communication to the screen.
      */
     function init() {
       airconsole = new AirConsole({"orientation": "portrait"});
-      //document.getElementById("p1c0").addEventListener("touchstart", playCard);
 
       /*
        * Checks if this device is part of the active game.
@@ -35,7 +37,6 @@
               document.getElementById("p1c" + i).style.backgroundImage="url(images/PNG-cards-1.3/" + data.hand[i] + ".png)";
             }
             if (data.hand.length === 4) {
-              // document.getElementById("p1c4").style.backgroundImage="url(images/PNG-cards-1.3/haas.jpg)";
               document.getElementById("p1c4").style.backgroundImage="none";
             }
           } else if (data.messageType === "Clear") {
@@ -44,9 +45,9 @@
             for (var i = 0; i < j; i++) {
               cardElements[i].style.backgroundImage="url(images/PNG-cards-1.3/haas.jpg)";
            }
-          }
-          navigator.vibrate(data.vibrate);
-          console.log("Vibrating: " + data.vibrate);
+         } else if (data.messageType === "YourTurn") {
+           myTurn = true;
+         }
         }
       };
     }
@@ -60,37 +61,107 @@
     }
 
     // ************************
+    //  Move Logic
+    // ************************
+    function makeMove(cardValue, element) {
+      if (cardValue !== undefined) {
+        switch (cardValue) {
+          case "2":
+            //Move piece forward 2 spaces
+            break;
+          case "3":
+            //Move piece forward 3 spaces
+            break;
+          case "4":
+            //Move piece backwards 4 spaces
+            break;
+          case "5":
+            //Move piece forward 5 spaces
+            break;
+          case "6":
+            //Move piece forward 6 spaces
+            break;
+          case "7":
+            //Move 2 pieces a total of 7 sapces
+            break;
+          case "8":
+            //Move piece forward 8 spaces
+            break;
+          case "9":
+            //Move piece forward 9 spaces
+            break;
+          case "10":
+            //Move piece forward 10 spaces
+            break;
+          case "jack":
+            //Swap the position of any two pieces
+            break;
+          case "queen":
+            //Move piece forward 12 spaces
+            break;
+          case "king":
+            // Move a piece out of Start
+            break;
+          case "ace":
+            //Move a piece out of Start or 1 space
+            break;
+          default:
+
+        }
+
+        myTurn = false;
+        airconsole.message(AirConsole.SCREEN, {messageType:"Move", cValue: cardValue});
+        var cs = document.getElementById("centerSquare");
+        cs.style.backgroundImage = element.style.backgroundImage;
+        element.style.backgroundImage = "none";
+        // Select marble and make move
+        return true;
+      }
+      return false;
+    }
+
+    // ************************
     //  Card Listners
     // ************************
 
     function card0Listener() {
-      let element = document.getElementById("p1c0");
-      var cardValue = getCardValueFromElement(element);
-      makeMove(cardValue, element);
+      if (myTurn) {
+        let element = document.getElementById("p1c0");
+        var cardValue = getCardValueFromElement(element);
+        makeMove(cardValue, element);
+      }
     }
 
     function card1Listener() {
-      let element = document.getElementById("p1c1");
-      var cardValue = getCardValueFromElement(element);
-      makeMove(cardValue, element);
+      if (myTurn){
+        let element = document.getElementById("p1c1");
+        var cardValue = getCardValueFromElement(element);
+        makeMove(cardValue, element);
+      }
     }
 
     function card2Listener() {
-      let element = document.getElementById("p1c2");
-      var cardValue = getCardValueFromElement(element);
-      makeMove(cardValue, element);
+      if (muTurn) {
+        let element = document.getElementById("p1c2");
+        var cardValue = getCardValueFromElement(element);
+        makeMove(cardValue, element);
+      }
     }
 
     function card3Listener() {
-      let element = document.getElementById("p1c3");
-      var cardValue = getCardValueFromElement(element);
-      makeMove(cardValue, element);
+      if (myTurn) {
+        let element = document.getElementById("p1c3");
+        var cardValue = getCardValueFromElement(element);
+        makeMove(cardValue, element);
+      }
     }
 
     function card4Listener() {
-      let element = document.getElementById("p1c4");
-      var cardValue = getCardValueFromElement(element);
-      makeMove(cardValue, element);
+      if (myTurn) {
+        let element = document.getElementById("p1c4");
+        var cardValue = getCardValueFromElement(element);
+        makeMove(cardValue, element);
+      }
     }
 
       function getCardValueFromElement(element) {
@@ -104,75 +175,11 @@
         }
       }
 
-      function makeMove(cardValue, element) {
-        if (cardValue !== undefined) {
-          airconsole.message(AirConsole.SCREEN, {messageType:"Move", cValue: cardValue});
-          element.style.backgroundImage = "none";
-          // Select marble and make move
-          return true;
-        }
-        return false;
-      }
-
-
   </script>
-  <style type="text/css">
-    @font-face {
-      font-family: 'PressStart2P';
-      src: url('PressStart2P.ttf') format('truetype');
-      text-align: center;
-    }
-
-    html, body {
-      height: 100%;
-      margin: 0px;
-      font-family: 'PressStart2P', sans-serif;
-      color: white;
-      text-align: center;
-      background-color: black;
-    }
-
-    .button {
-      display: block;
-      height: 5%;
-      width: 98%;
-      background-color: #222;
-      position: relative;
-    }
-
-    .button_label {
-      position: absolute;
-      left: 0px;
-      width: 100%;
-      top: 50%;
-      margin-top: -6px;
-    }
-
-    #player_id {
-      position: block;
-      top: 1%;
-      left: 0%;
-      width: 100%;
-      margin-top: 50px;
-      color: #777;
-    }
-  </style>
 </head>
 <body onload="init()">
 <div style="height: 1%"></div>
 <div id="player_id">It's a 2 player game</div>
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;height:95vw; width:95vw}
-.tg td{padding:9px 9px;border-style:solid;border-width:1px;border-color:black;}
-.tg th{padding:9px 9px;border-style:solid;border-width:1px;border-color:black;}
-.tg .tg-2n01{background-color:#3531ff;border-color:inherit} /* Blue game squares */
-.tg .tg-6gc2{background-color:#986536;border-color:inherit} /* Normal brown game squares */
-.tg .tg-kwiq{color:#000000;border-color:inherit} /* Non-game squares */
-.tg .tg-0pky{border-color:inherit;} /* Merged blank cells */
-.tg .tg-tw5s{background-color:#fe0000;border-color:inherit} /* Red game squares */
-.tg .tg-agym{background-color:#fcff2f;border-color:inherit} /* Yellow game squares */
-.tg .tg-706m{background-color:#009901;border-color:inherit} /* Green game squares */
-</style>
 <table class="tg">
   <tr>
     <td class="tg-0pky" colspan="5"></td>
@@ -259,9 +266,9 @@
     <td class="tg-0pky"></td>
     <td class="tg-0pky"></td>
     <td class="tg-0pky"></td>
-    <td class="tg-0pky"></td>
-    <td class="tg-0pky"></td>
-    <td class="tg-0pky"></td>
+    <td class="tg-center" colspan="3" rowspan="3"></td>
+    <!-- <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td> -->
     <td class="tg-0pky"></td>
     <td class="tg-0pky"></td>
     <td class="tg-0pky"></td>
@@ -276,9 +283,11 @@
     <td class="tg-tw5s"></td>
     <td class="tg-tw5s"></td>
     <td class="tg-0pky"></td>
-    <td class="tg-0pky"></td>
-    <td class="tg-0pky"></td>
-    <td class="tg-0pky"></td>
+    <!-- <td class="tg-0pky"></td> -->
+    <!-- <td id="centerSquare" class="tg-center">
+      <!-- <img id="p1c4" alt="No Card" class="cards" src="images/PNG-cards-1.3/haas.jpg" style="width:16%;height:20%"> -->
+    </td> -->
+    <!-- <td class="tg-0pky"></td> -->
     <td class="tg-0pky"></td>
     <td class="tg-706m"></td>
     <td class="tg-706m"></td>
@@ -292,9 +301,9 @@
     <td class="tg-0pky"></td>
     <td class="tg-0pky"></td>
     <td class="tg-0pky"></td>
+    <!-- <td class="tg-0pky"></td>
     <td class="tg-0pky"></td>
-    <td class="tg-0pky"></td>
-    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td> -->
     <td class="tg-0pky"></td>
     <td class="tg-0pky"></td>
     <td class="tg-0pky"></td>
