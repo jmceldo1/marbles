@@ -1,0 +1,47 @@
+@font-face {
+  font-family: 'PressStart2P';
+  src: url('PressStart2P.ttf') format('truetype');
+}
+
+html, body {
+  height: 100%;
+  margin: 0px;
+  font-family: 'PressStart2P', sans-serif;
+  color: white;
+  text-align: center;
+}
+
+.game {
+  background-color: black;
+  top: 50%;
+  margin-top: -25%;
+  padding-bottom: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+#canvas {
+  position: absolute;
+  top: 0px;
+  left:0px;
+  width: 100%;
+  height: 100%;
+}
+
+#score {
+  position: absolute;
+  top: 10%;
+  left: 0px;
+  width: 100%;
+  font-size: 48px;
+}
+
+#wait {
+  position: absolute;
+  top: 10%;
+  margin-top: 80px;
+  left: 0px;
+  width: 100%;
+  font-size: 24px;
+  color: lime;
+}
