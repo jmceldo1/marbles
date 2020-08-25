@@ -3,6 +3,7 @@
     <link href="ScreenStyleSheet.css" rel="stylesheet" type="text/css">
 
     <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.3.0.js"></script>
+    <script type="text/javascript" src="./moveTypes.js"></script>
     <script type="text/javascript">
       var airconsole;
       var canvas;
@@ -37,9 +38,9 @@
         airconsole.onMessage = function(device_id, data) {
           var player = airconsole.convertDeviceIdToPlayerNumber(device_id);
           if (player != undefined && data.messageType !== undefined) {
-            if (data.messageType === "Deal") {
+            if (data.messageType === DEAL) {
               dealPlease();
-            } else if (data.messageType === "Move") {
+            } else if (data.messageType === MOVE) {
               yourTurn(player);
               console.log(data.cValue);
             }
@@ -177,9 +178,9 @@
         }
         //Deal to connected_controllers
         var player1DeviceId = airconsole.convertPlayerNumberToDeviceId(0);
-        var player1Data = {messageType: "Deal", hand: p1};
+        var player1Data = {messageType: DEAL, hand: p1};
         airconsole.message(player1DeviceId, player1Data);
-        airconsole.message(airconsole.convertPlayerNumberToDeviceId(1), {messageType: "Deal", hand: p2})
+        airconsole.message(airconsole.convertPlayerNumberToDeviceId(1), {messageType: DEAL, hand: p2})
         p1 = [];
         p2 = [];
         p3 = [];
@@ -204,12 +205,12 @@
           p2 = [];
           p3 = [];
           p4 = [];
-          airconsole.broadcast({messageType: "Clear"})
+          airconsole.broadcast({messageType: CLEAR})
         }
 
         function yourTurn(recentlyPlayedPlayerNumber) {
           var nextPlayer = (recentlyPlayedPlayerNumber + 1) % numberOfPlayers;
-          airconsole.message(airconsole.convertPlayerNumberToDeviceId(nextPlayer), {messageType: "YourTurn"});
+          airconsole.message(airconsole.convertPlayerNumberToDeviceId(nextPlayer), {messageType: YOUR_TURN});
         }
 
     </script>
