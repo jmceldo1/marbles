@@ -4,7 +4,8 @@
 
   <script type="text/javascript"
           src="https://www.airconsole.com/api/airconsole-1.3.0.js"></script>
-  <script type="text/javascript" src="./moveTypes.js"></script>
+  <script type="text/javascript" src="./airconsole-events.js"></script>
+  <script type="text/javascript" src="./constants.js"></script>
   <script type="text/javascript">
     var airconsole;
     var re = /images\/PNG-cards-1.3\/(.*)_of_/;
@@ -28,40 +29,47 @@
         }
       };
 
-      /*
-       * Makes the device vibrate if the screen says so.
-       */
-      airconsole.onMessage = function(from, data) {
-        if (from == AirConsole.SCREEN && data.messageType !== undefined) {
-          if (data.messageType === DEAL && data.hand !== undefined) {
-            for(i=0; i<data.hand.length; i++) {
-              document.getElementById("p1c" + i).style.backgroundImage="url(images/PNG-cards-1.3/" + data.hand[i] + ".png)";
+      airconsole.onMessage = function(device_id, data) {
+        this.dispatchEvent(device_id, data);
+      };
+
+      airconsole.on(DEAL, function(device_id, params) {
+        if (device_id === AirConsole.SCREEN && params.hand !== undefined) {
+          for(i=0; i<params.hand.length; i++) {
+              document.getElementById("p1c" + i).style.backgroundImage="url(images/PNG-cards-1.3/" + params.hand[i] + ".png)";
             }
-            if (data.hand.length === 4) {
+            if (params.hand.length === 4) {
               document.getElementById("p1c4").style.backgroundImage="none";
             }
-          } else if (data.messageType === CLEAR) {
-            var cardElements = document.getElementsByClassName("cards");
+        }
+      });
+
+      airconsole.on(CLEAR, function(device_id, params){
+        if (device_id === AirConsole.SCREEN) {
+          var cardElements = document.getElementsByClassName("cards");
             var i; j = cardElements.length;
             for (var i = 0; i < j; i++) {
               cardElements[i].style.backgroundImage="url(images/PNG-cards-1.3/haas.jpg)";
            }
-         } else if (data.messageType === YOUR_TURN) {
-           myTurn = true;
-           var div = document.getElementById("player_id");
-           var newHtml = div.innerHTML + " Its Your Turn!";
-           div.innerHTML = newHtml;
-         }
         }
-      };
-    }
+      });
+
+      airconsole.on(YOUR_TURN, function(device_id, params) {
+      myTurn = true;
+      var div = document.getElementById("player_id");
+      var newHtml = div.innerHTML + " Its Your Turn!";
+      div.innerHTML = newHtml;
+    });
+  }
+
+   
 
     /**
      * Tells the screen to deal the paddle of this player.
      * @param amount
      */
     function deal() {
-      airconsole.message(AirConsole.SCREEN, {messageType: DEAL})
+      airconsole.sendEvent(AirConsole.SCREEN, DEAL, {});
     }
 
     // ************************
@@ -119,7 +127,7 @@
         div.innerHTML = newHtml;
 
         myTurn = false;
-        airconsole.message(AirConsole.SCREEN, {messageType:MOVE, cValue: cardValue});
+        airconsole.sendEvent(AirConsole.SCREEN, MOVE, {cValue: cardValue});
         // var cs = document.getElementById("centerSquare");
         // cs.style.backgroundImage = element.style.backgroundImage;
         element.style.backgroundImage = "none";
