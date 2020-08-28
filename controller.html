@@ -29,6 +29,23 @@
         }
       };
 
+      airconsole.onDeviceStateChange = function(device_id, data) {
+        //Not sure if this check should be required or not
+        if (data){
+          this.evaluateCustomData(device_id, data);
+        }
+      };
+
+      airconsole.onReady = function() {
+        // Observe the 'position' property of the screen
+        this.observeCustomProperty(AirConsole.SCREEN, "data", function(new_value, old_value) {
+          if (new_value) {
+          var doc = document.getElementById("center-square");
+          doc.style.backgroundImage = new_value.playedCard;
+          }
+        });
+      };
+
       airconsole.onMessage = function(device_id, data) {
         this.dispatchEvent(device_id, data);
       };
@@ -184,11 +201,12 @@
       function getCardValueFromElement(element) {
         var backGroundImageUrl = element.style.backgroundImage;
         if (backGroundImageUrl !== undefined) {
-          var cardValueMatcher = backGroundImageUrl.match(re);
-          if (cardValueMatcher !== undefined && cardValueMatcher !== null) {
-            element.style.backgroundImage = "none";
-            return cardValueMatcher[1];
-          }
+          return backGroundImageUrl;
+          // var cardValueMatcher = backGroundImageUrl.match(re);
+          // if (cardValueMatcher !== undefined && cardValueMatcher !== null) {
+          //   element.style.backgroundImage = "none";
+          //   return cardValueMatcher[1];
+          // }
         }
       }
 
@@ -283,7 +301,7 @@
     <td class="tg-0pky"></td>
     <td class="tg-0pky"></td>
     <td class="tg-0pky"></td>
-    <td class="tg-center" colspan="3" rowspan="3"></td>
+    <td id="center-square" class="tg-center" colspan="3" rowspan="3"></td>
     <td class="tg-0pky"></td>
     <td class="tg-0pky"></td>
     <td class="tg-0pky"></td>
