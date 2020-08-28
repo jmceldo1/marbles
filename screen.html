@@ -21,6 +21,17 @@
       function setupConsole() {
         airconsole = new AirConsole();
 
+        var setCustomState = function(value) {
+          airconsole.setCustomDeviceStateProperty("data", value);
+        };
+
+        airconsole.onReady = function() {
+          // Set an inital value for the position property
+          setCustomState({
+            playedCard: "Hello"
+          });
+        };
+
         airconsole.onConnect = function(device_id) {
           //Will eventually need 4. Will do two for now for testing purposes
           checkTwoPlayers();
@@ -52,6 +63,9 @@
           if (player != undefined) {
             yourTurn(player);
             console.log(params.cValue);
+            setCustomState({
+              playedCard: params.cValue
+            })
           }
         });
       }
