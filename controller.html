@@ -8,9 +8,30 @@
   <script type="text/javascript" src="js/constants.js"></script>
   <script type="text/javascript" src="js/controller.js"></script>
 </head>
-<body onload="init()">
+<body onload="init()" onresize="setBoardBasedOnState()">
 <div style="height: 1%"></div>
 <div id="player_id">It's a 2 player game (Its Your Turn)</div>
+
+<button id="rp-0" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:white; background-color: red;"></button>
+<button id="rp-1" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:white; background-color: red;"></button>
+<button id="rp-2" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:white; background-color: red;"></button>
+<button id="rp-3" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:white; background-color: red;"></button>
+
+<button id="yp-0" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:black; background-color: yellow;"></button>
+<button id="yp-1" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:black; background-color: yellow;"></button>
+<button id="yp-2" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:black; background-color: yellow;"></button>
+<button id="yp-3" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:black; background-color: yellow;"></button>
+
+<button id="gp-0" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:white; background-color: green;"></button>
+<button id="gp-1" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:white; background-color: green;"></button>
+<button id="gp-2" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:white; background-color: green;"></button>
+<button id="gp-3" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:white; background-color: green;"></button>
+
+<button id="bp-0" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:white; background-color: blue;"></button>
+<button id="bp-1" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:white; background-color: blue;"></button>
+<button id="bp-2" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:white; background-color: blue;"></button>
+<button id="bp-3" style="height:6vw; width: 6vw; z-index: 5; position: absolute;border-radius: 50%; border-style:solid;border-width:5px;border-color:white; background-color: blue;"></button>
+
 <table class="tg">
   <tr>
     <td class="tg-0pky" colspan="5"></td>
@@ -23,19 +44,19 @@
   </tr>
   <tr>
     <td class="tg-0pky"></td>
-    <td class="tg-tw5s"></td>
+    <td id="rs-0" class="tg-tw5s"></td>
     <td class="tg-0pky"></td>
-    <td class="tg-tw5s"></td>
-    <td class="tg-0pky"></td>
-    <td class="tg-6gc2"></td>
-    <td class="tg-0pky"></td>
-    <td class="tg-agym"></td>
+    <td id="rs-1" class="tg-tw5s"></td>
     <td class="tg-0pky"></td>
     <td class="tg-6gc2"></td>
     <td class="tg-0pky"></td>
     <td class="tg-agym"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td id="ys-0" class="tg-agym"></td>
     <td class="tg-kwiq"></td>
-    <td class="tg-agym"></td>
+    <td id="ys-1" class="tg-agym"></td>
     <td class="tg-0pky"></td>
   </tr>
   <tr>
@@ -49,19 +70,19 @@
   </tr>
   <tr>
     <td class="tg-0pky"></td>
-    <td class="tg-tw5s"></td>
+    <td id="rs-2" class="tg-tw5s"></td>
     <td class="tg-0pky"></td>
-    <td class="tg-tw5s"></td>
-    <td class="tg-0pky"></td>
-    <td class="tg-6gc2"></td>
-    <td class="tg-0pky"></td>
-    <td class="tg-agym"></td>
+    <td id="rs-3" class="tg-tw5s"></td>
     <td class="tg-0pky"></td>
     <td class="tg-6gc2"></td>
     <td class="tg-0pky"></td>
     <td class="tg-agym"></td>
     <td class="tg-0pky"></td>
-    <td class="tg-agym"></td>
+    <td class="tg-6gc2"></td>
+    <td class="tg-0pky"></td>
+    <td id="ys-2" class="tg-agym"></td>
+    <td class="tg-0pky"></td>
+    <td id="ys-3" class="tg-agym"></td>
     <td class="tg-0pky"></td>
   </tr>
   <tr>
@@ -161,19 +182,19 @@
   </tr>
   <tr>
     <td class="tg-0pky"></td>
-    <td class="tg-2n01"></td>
+    <td id="bs-0" class="tg-2n01"></td>
+    <td class="tg-0pky"></td>
+    <td id="bs-1" class="tg-2n01"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
     <td class="tg-0pky"></td>
     <td class="tg-2n01"></td>
     <td class="tg-0pky"></td>
     <td class="tg-6gc2"></td>
     <td class="tg-0pky"></td>
-    <td class="tg-2n01"></td>
+    <td id="gs-0" class="tg-706m"></td>
     <td class="tg-0pky"></td>
-    <td class="tg-6gc2"></td>
-    <td class="tg-0pky"></td>
-    <td class="tg-706m"></td>
-    <td class="tg-0pky"></td>
-    <td class="tg-706m"></td>
+    <td id="gs-1" class="tg-706m"></td>
     <td class="tg-0pky"></td>
   </tr>
   <tr>
@@ -187,19 +208,19 @@
   </tr>
   <tr>
     <td class="tg-0pky"></td>
-    <td class="tg-2n01"></td>
+    <td id="bs-2" class="tg-2n01"></td>
+    <td class="tg-0pky"></td>
+    <td id="bs-3" class="tg-2n01"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-6gc2"></td>
     <td class="tg-0pky"></td>
     <td class="tg-2n01"></td>
     <td class="tg-0pky"></td>
     <td class="tg-6gc2"></td>
     <td class="tg-0pky"></td>
-    <td class="tg-2n01"></td>
+    <td id="gs-2" class="tg-706m"></td>
     <td class="tg-0pky"></td>
-    <td class="tg-6gc2"></td>
-    <td class="tg-0pky"></td>
-    <td class="tg-706m"></td>
-    <td class="tg-0pky"></td>
-    <td class="tg-706m"></td>
+    <td id="gs-3" class="tg-706m"></td>
     <td class="tg-0pky"></td>
   </tr>
   <tr>
