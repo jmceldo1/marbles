@@ -12,17 +12,7 @@ function init() {
     // start = true;
     console.log("Controller init function");
     airconsole = new AirConsole({ "orientation": "portrait" });
-    // setBoardBasedOnState();
-    // var testPiece = document.getElementById("piece");
-    // console.log(testPiece);
-
-    // var rs0 = document.getElementById("rs-0");
-
-    // var foo = getOffset(rs0);
-    // console.log(foo);
-
-    // testPiece.style.left = foo.left;
-    // testPiece.style.top = foo.top;
+    setBoardBasedOnState();
 
     /*
     * Checks if this device is part of the active game.
@@ -54,7 +44,7 @@ function init() {
         });
 
         //Will Call from here later JAM UNCOMMENT
-        setBoardBasedOnState();
+        // setBoardBasedOnState();
     };
 
     airconsole.onMessage = function (device_id, data) {
@@ -90,7 +80,8 @@ function init() {
     });
 }
 
-function setBoardBasedOnState() {
+function setBoardBasedOnState() {  
+    
     movePieceToSquare("rp-0", "rs-0");
     movePieceToSquare("rp-1", "rs-1");
     movePieceToSquare("rp-2", "rs-2");
@@ -211,6 +202,12 @@ function makeMove(cardValue, element) {
 // ************************
 //  Card Listners
 // ************************
+
+function boardListener(event) {
+    console.log('InsideTestListener');
+    console.log(event);
+    movePieceToSquare("rp-0", event.srcElement.id);
+}
 
 function card0Listener() {
     if (myTurn) {
