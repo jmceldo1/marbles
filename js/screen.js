@@ -6,6 +6,18 @@ var p1 = [];
 var p2 = [];
 var p3 = [];
 var p4 = [];
+var boardArray = [{piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null}, {piece: null}, {piece: null},{piece: null},
+    {piece: null}, {piece: null}, {piece: null, home: [{id:"ye-0", piece:null}, {id:"ye-1", piece:null},{id:"ye-2", piece:null}, {id:"ye-3", piece:null}]}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null, home: [{id:"ge-0", piece:null}, {id:"ge-1", piece:null},{id:"ge-2", piece:null}, {id:"ge-3", piece:null}]}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null, home: [{id:"be-0", piece:null}, {id:"be-1", piece:null},{id:"be-2", piece:null}, {id:"be-3", piece:null}]}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null, home: [{id:"re-0", piece:null}, {id:"re-1", piece:null},{id:"re-2", piece:null}, {id:"re-3", piece:null}]}, {piece: null}]
+console.log(boardArray);
 
 /**
  * Sets up the communication to game pads.
@@ -99,6 +111,8 @@ function init() {
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
     window.onresize = (clearCanvas);
+
+    setBoardBasedOnState();
 }
 
 /**

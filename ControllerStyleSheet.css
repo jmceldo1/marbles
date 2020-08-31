@@ -38,7 +38,7 @@ html, body {
   color: #777;
 }
 
-.tg  {border-collapse:collapse;border-spacing:0;height:95vw; width:95vw}
+.tg  {border-collapse:collapse;border-spacing:0;height:100vw; width:100vw}
 .tg td{padding:9px 9px;border-style:solid;border-width:1px;border-color:black;}
 .tg th{padding:9px 9px;border-style:solid;border-width:1px;border-color:black;}
 .tg .blue-squares{background-color:#3531ff;border-color:inherit} /* Blue game squares */
@@ -48,3 +48,51 @@ html, body {
 .tg .red-squares{background-color:#fe0000;border-color:inherit} /* Red game squares */
 .tg .yellow-squares{background-color:#fcff2f;border-color:inherit} /* Yellow game squares */
 .tg .green-squares{background-color:#009901;border-color:inherit} /* Green game squares */
+
+.red-pieces {
+  height: 6vw;
+  width: 6vw;
+  z-index: 2;
+  position: absolute;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 5px;
+  border-color: white;
+  background-color: red;
+}
+
+.yellow-pieces {
+  height: 6vw;
+  width: 6vw;
+  z-index: 2;
+  position: absolute;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 5px;
+  border-color: black;
+  background-color: yellow;
+}
+
+.green-pieces {
+  height: 6vw;
+  width: 6vw;
+  z-index: 2;
+  position: absolute;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 5px;
+  border-color: white;
+  background-color: green;
+}
+
+.blue-pieces {
+  height: 6vw;
+  width: 6vw;
+  z-index: 2;
+  position: absolute;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 5px;
+  border-color: white;
+  background-color: blue;
+}
