@@ -15,6 +15,7 @@ function init() {
     console.log("Controller init function");
     airconsole = new AirConsole({ "orientation": "portrait" });
     setBoardBasedOnState();
+    var tp = document.getElementById("rp-0").addEventListener("click", pieceListener);
 
     /*
     * Checks if this device is part of the active game.
