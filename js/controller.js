@@ -4,6 +4,9 @@ var myTurn = false;
 var start = false;
 var selectedPiece;
 var playerName
+var pieceBoarderColorArray;
+var pieceBackgroundColorArray;
+
 
 /**
  * Sets up the communication to the screen.
@@ -11,7 +14,8 @@ var playerName
 function init() {
     airconsole = new AirConsole({ "orientation": "portrait" });
     setBoardBasedOnState();
-    var tp = document.getElementById("rp-0").addEventListener("click", pieceListener);
+    // var tp = document.getElementById("rp-0").addEventListener("click", pieceListener);
+    setupPieceListeners(3);
 
     /*
     * Checks if this device is part of the active game.
@@ -22,6 +26,7 @@ function init() {
             playerName = (["Player One", "Player Two", "Player Three", "Player Four"][player]);
             div.innerHTML = playerName;
             div.style.color = (["#3531ff", "#fe0000", "#fcff2f", "#009901"][player]);
+            setupPieceListeners(player);
         } else {
             div.innerHTML = "It's a 2 player game!!";
         }
@@ -79,11 +84,7 @@ function init() {
     });
 }
 
-function pieceListener() {
-    var piece = document.getElementById("rp-0");
-    piece.style.backgroundColor="darkred";
-    piece.style.borderColor="black";
-}
+
 
 
 
@@ -161,6 +162,53 @@ function makeMove(cardValue, element) {
 // ************************
 //  Listners
 // ************************
+function setupPieceListeners(player) {
+    console.log("Setting up listeners for player: " + player);
+    switch (player) {
+        case 0:
+            var elements = document.getElementsByClassName("red-pieces");
+            pieceBoarderColorArray = ["white", "black"];
+            pieceBackgroundColorArray = ["red", "darkred"];
+            Array.prototype.map.call(elements, element => {
+                element.addEventListener("click", pieceListener);
+            });
+            break;
+        case 1:
+            var elements = document.getElementsByClassName("yellow-pieces");
+            pieceBoarderColorArray = ["black", "white"];
+            pieceBackgroundColorArray = ["yellow", "orange"];
+            Array.prototype.map.call(elements, element => {
+                element.addEventListener("click", pieceListener);
+            });
+            break;
+        case 2:
+            var elements = document.getElementsByClassName("green-pieces");
+            pieceBoarderColorArray = ["white", "black"];
+            pieceBackgroundColorArray = ["green", "darkgreen"];
+            Array.prototype.map.call(elements, element => {
+                element.addEventListener("click", pieceListener);
+            });
+            break;
+        case 3:
+            var elements = document.getElementsByClassName("blue-pieces");
+            pieceBoarderColorArray = ["white", "black"];
+            pieceBackgroundColorArray = ["blue", "darkblue"];
+            Array.prototype.map.call(elements, element => {
+                element.addEventListener("click", pieceListener);
+            });
+            break;
+        default:
+            console.log("Invalid Player Number: " + player);
+            break;
+    }
+
+}
+
+function pieceListener(event) {
+    var piece = document.getElementById(event.srcElement.id);
+    piece.style.backgroundColor = pieceBackgroundColorArray[1];
+    piece.style.borderColor = pieceBoarderColorArray[1];
+}
 
 function boardListener(event) {
     movePieceToSquare("rp-0", event.srcElement.id);
