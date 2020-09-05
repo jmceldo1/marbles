@@ -13,9 +13,6 @@ html, body {
 
 .game {
   background-color: black;
-  top: 50%;
-  margin-top: -25%;
-  padding-bottom: 50%;
   overflow: hidden;
   position: relative;
 }
@@ -58,8 +55,8 @@ html, body {
 .tg .green-squares{background-color:#009901;border-color:inherit} /* Green game squares */
 
 .red-pieces {
-  height: 6vw;
-  width: 6vw;
+  height: 6vh;
+  width: 6vh;
   z-index: 2;
   position: absolute;
   border-radius: 50%;
@@ -70,8 +67,8 @@ html, body {
 }
 
 .yellow-pieces {
-  height: 6vw;
-  width: 6vw;
+  height: 6vh;
+  width: 6vh;
   z-index: 2;
   position: absolute;
   border-radius: 50%;
@@ -82,8 +79,8 @@ html, body {
 }
 
 .green-pieces {
-  height: 6vw;
-  width: 6vw;
+  height: 6vh;
+  width: 6vh;
   z-index: 2;
   position: absolute;
   border-radius: 50%;
@@ -94,8 +91,8 @@ html, body {
 }
 
 .blue-pieces {
-  height: 6vw;
-  width: 6vw;
+  height: 6vh;
+  width: 6vh;
   z-index: 2;
   position: absolute;
   border-radius: 50%;

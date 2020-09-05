@@ -1,3 +1,15 @@
+function createPiece(id, location){
+    return {pieceId: id, location: location};
+}
+
+function createPlayerMove(card, moves) {
+    return {cardUrl: card, moves: moves};
+}
+
+function createMove(pieceId, previousLocation, newLocation) {
+    return {pieceId: pieceId, previousLocation: previousLocation, newLocation: newLocation};
+}
+
 function setBoardBasedOnState() {  
     
     movePieceToSquare("rp-0", "rs-0");
@@ -39,4 +51,30 @@ function getOffset( el ) {
         el = el.offsetParent;
     }
     return { top: _y, left: _x };
+}
+
+var boardArray = [{piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null}, {piece: null}, {piece: null},{piece: null},
+    {piece: null}, {piece: null}, {piece: null, home: [{id:"ye-0", piece:null}, {id:"ye-1", piece:null},{id:"ye-2", piece:null}, {id:"ye-3", piece:null}]}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null, home: [{id:"ge-0", piece:null}, {id:"ge-1", piece:null},{id:"ge-2", piece:null}, {id:"ge-3", piece:null}]}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null, home: [{id:"be-0", piece:null}, {id:"be-1", piece:null},{id:"be-2", piece:null}, {id:"be-3", piece:null}]}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
+    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null, home: [{id:"re-0", piece:null}, {id:"re-1", piece:null},{id:"re-2", piece:null}, {id:"re-3", piece:null}]}, {piece: null}]
+
+
+
+
+function getPossibleSquare(piece, cardValue) {
+    piece.currentLocation;
+
+    //Get Current location of piece
+
+    //Calculate where cardValue puts piece
+
+    //Update style of that square
+
 }

@@ -3,16 +3,12 @@ var re = /images\/PNG-cards-1.3\/(.*)_of_/;
 var myTurn = false;
 var start = false;
 var selectedPiece;
+var playerName
 
 /**
  * Sets up the communication to the screen.
  */
 function init() {
-    // if (start) {
-    //     return;
-    // }
-    // start = true;
-    console.log("Controller init function");
     airconsole = new AirConsole({ "orientation": "portrait" });
     setBoardBasedOnState();
     var tp = document.getElementById("rp-0").addEventListener("click", pieceListener);
@@ -23,7 +19,8 @@ function init() {
     airconsole.onActivePlayersChange = function (player) {
         var div = document.getElementById("player_id");
         if (player !== undefined) {
-            div.innerHTML = (["Player One", "Player Two", "Player Three", "Player Four"][player]);
+            playerName = (["Player One", "Player Two", "Player Three", "Player Four"][player]);
+            div.innerHTML = playerName;
             div.style.color = (["#3531ff", "#fe0000", "#fcff2f", "#009901"][player]);
         } else {
             div.innerHTML = "It's a 2 player game!!";
@@ -78,15 +75,12 @@ function init() {
     airconsole.on(YOUR_TURN, function (device_id, params) {
         myTurn = true;
         var div = document.getElementById("player_id");
-        var newHtml = div.innerHTML + " Its Your Turn!";
-        div.innerHTML = newHtml;
+        div.innerHTML = "Its Your Turn!";
     });
 }
 
 function pieceListener() {
-    console.log("Piece Listener");
     var piece = document.getElementById("rp-0");
-    console.log(piece);
     piece.style.backgroundColor="darkred";
     piece.style.borderColor="black";
 }
@@ -151,9 +145,7 @@ function makeMove(cardValue, element) {
         }
 
         var div = document.getElementById("player_id");
-        var str = div.innerHTML;
-        var newHtml = str.substring(0, str.indexOf(" Its Your Turn!"));
-        div.innerHTML = newHtml;
+        div.innerHTML = playerName;
 
         myTurn = false;
         airconsole.sendEvent(AirConsole.SCREEN, MOVE, { cValue: cardValue });
@@ -171,8 +163,6 @@ function makeMove(cardValue, element) {
 // ************************
 
 function boardListener(event) {
-    console.log('InsideTestListener');
-    console.log(event);
     movePieceToSquare("rp-0", event.srcElement.id);
 }
 

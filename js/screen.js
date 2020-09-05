@@ -17,7 +17,27 @@ var boardArray = [{piece: null}, {piece: null}, {piece: null}, {piece: null}, {p
     {piece: null, home: [{id:"be-0", piece:null}, {id:"be-1", piece:null},{id:"be-2", piece:null}, {id:"be-3", piece:null}]}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
     {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
     {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null, home: [{id:"re-0", piece:null}, {id:"re-1", piece:null},{id:"re-2", piece:null}, {id:"re-3", piece:null}]}, {piece: null}]
-console.log(boardArray);
+
+
+var redPiece0 = createPiece("rp-0", "rs-0");
+var redPiece1 = createPiece("rp-1", "rs-1");
+var redPiece2 = createPiece("rp-2", "rs-2");
+var redPiece3 = createPiece("rp-3", "rs-3");
+
+var yellowPiece0 = createPiece("yp-0", "ys-0");
+var yellowPiece1 = createPiece("yp-1", "ys-1");
+var yellowPiece2 = createPiece("yp-2", "ys-2");
+var yellowPiece3 = createPiece("yp-3", "ys-3");
+
+var greenPiece0 = createPiece("gp-0", "gs-0");
+var greenPiece1 = createPiece("gp-1", "gs-1");
+var greenPiece2 = createPiece("gp-2", "gs-2");
+var greenPiece3 = createPiece("gp-3", "gs-3");
+
+var bluePiece0 = createPiece("bp-0", "bs-0");
+var bluePiece1 = createPiece("bp-1", "bs-1");
+var bluePiece2 = createPiece("bp-2", "bs-2");
+var bluePiece3 = createPiece("bp-3", "bs-3");
 
 /**
  * Sets up the communication to game pads.
@@ -101,7 +121,6 @@ function checkTwoPlayers() {
  * body.onload function.
  */
 function init() {
-    console.log("Screen Init function called");
     setupConsole();
     shuffle();
 
@@ -115,11 +134,6 @@ function init() {
     setBoardBasedOnState();
 }
 
-/**
-* Reseting the ball. Nothing Game Console specific.
-* @param move_x
-* @param move_y
-*/
 function clearCanvas() {
     var ctx = canvas.getContext("2d");
     ctx.fillStyle = "black";

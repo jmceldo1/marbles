@@ -1,247 +1,259 @@
 <html>
+
 <head>
   <link href="ControllerStyleSheet.css" rel="stylesheet" type="text/css">
 
-  <script type="text/javascript"
-          src="https://www.airconsole.com/api/airconsole-1.3.0.js"></script>
+  <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.3.0.js"></script>
   <script type="text/javascript" src="js/lib/airconsole-events.js"></script>
   <script type="text/javascript" src="js/constants.js"></script>
   <script type="text/javascript" src="js/utils.js"></script>
   <script type="text/javascript" src="js/controller.js"></script>
 </head>
+
 <body onload="init()" onresize="setBoardBasedOnState()">
-<div style="height: 1%"></div>
-<div id="player_id">It's a 2 player game (Its Your Turn)</div>
+  <div style="height: 1%"></div>
+  <div id="player_id">It's a 2 player game</div>
 
-<button id="rp-0" class="red-pieces"></button>
-<button id="rp-1" class="red-pieces"></button>
-<button id="rp-2" class="red-pieces"></button>
-<button id="rp-3" class="red-pieces"></button>
+  <button id="rp-0" class="red-pieces"></button>
+  <button id="rp-1" class="red-pieces"></button>
+  <button id="rp-2" class="red-pieces"></button>
+  <button id="rp-3" class="red-pieces"></button>
 
-<button id="yp-0" class="yellow-pieces"></button>
-<button id="yp-1" class="yellow-pieces"></button>
-<button id="yp-2" class="yellow-pieces"></button>
-<button id="yp-3" class="yellow-pieces"></button>
+  <button id="yp-0" class="yellow-pieces"></button>
+  <button id="yp-1" class="yellow-pieces"></button>
+  <button id="yp-2" class="yellow-pieces"></button>
+  <button id="yp-3" class="yellow-pieces"></button>
 
-<button id="gp-0" class="green-pieces"></button>
-<button id="gp-1" class="green-pieces"></button>
-<button id="gp-2" class="green-pieces"></button>
-<button id="gp-3" class="green-pieces"></button>
+  <button id="gp-0" class="green-pieces"></button>
+  <button id="gp-1" class="green-pieces"></button>
+  <button id="gp-2" class="green-pieces"></button>
+  <button id="gp-3" class="green-pieces"></button>
 
-<button id="bp-0" class="blue-pieces"></button>
-<button id="bp-1" class="blue-pieces"></button>
-<button id="bp-2" class="blue-pieces"></button>
-<button id="bp-3" class="blue-pieces"></button>
+  <button id="bp-0" class="blue-pieces"></button>
+  <button id="bp-1" class="blue-pieces"></button>
+  <button id="bp-2" class="blue-pieces"></button>
+  <button id="bp-3" class="blue-pieces"></button>
 
-<table class="tg">
-  <tr>
-    <td class="non-game-squares" colspan="5"></td>
-    <td id="10" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="11" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="12" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="13" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="yh" class="yellow-squares"></td>
-    <td class="non-game-squares" colspan="5"></th>
-  </tr>
-  <tr>
-    <td class="non-game-squares"></td>
-    <td id="rs-0" class="red-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="rs-1" class="red-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="9" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td id="ye-0"class="yellow-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="15" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td id="ys-0" class="yellow-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="ys-1" class="yellow-squares"></td>
-    <td class="non-game-squares"></td>
-  </tr>
-  <tr>
-    <td class="non-game-squares" colspan="5"></td>
-    <td id="8" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td id="ye-1" class="yellow-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="16" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares" colspan="5"></td>
-  </tr>
-  <tr>
-    <td class="non-game-squares"></td>
-    <td id="rs-2" class="red-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="rs-3" class="red-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="7" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td id="ye-2" class="yellow-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="17" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td id="ys-2" class="yellow-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="ys-3" class="yellow-squares"></td>
-    <td class="non-game-squares"></td>
-  </tr>
-  <tr>
-    <td class="non-game-squares" colspan="5"></td>
-    <td id="6" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td id="ye-3" class="yellow-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="18" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares" colspan="5"></td>
-  </tr>
-  <tr>
-    <td id="rh" class="red-squares"></td>
-    <td id="1" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="2" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="3" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="4" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="5" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="19" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="20" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="21" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="22" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="23" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="24" class="normal-board" onClick="boardListener(event)" ></td>
-  </tr>
-  <tr>
-    <td id="55" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="center-square" class="center-square" colspan="3" rowspan="3"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="25" class="normal-board" onClick="boardListener(event)" ></td>
-  </tr>
-  <tr>
-    <td id="54" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="re-0" class="red-squares"></td>
-    <td id="re-1" class="red-squares"></td>
-    <td id="re-2" class="red-squares"></td>
-    <td id="re-3" class="red-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="ge-3" class="green-squares"></td>
-    <td id="ge-2" class="green-squares"></td>
-    <td id="ge-1" class="green-squares"></td>
-    <td id="ge-0" class="green-squares"></td>
-    <td id="26" class="normal-board" onClick="boardListener(event)" ></td>
-  </tr>
-  <tr>
-    <td id="53" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="27" class="normal-board" onClick="boardListener(event)" ></td>
-  </tr>
-  <tr>
-    <td id="52" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="51" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="50" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="49" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="48" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="47" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="33" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="32" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="31" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="30" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="29" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="gh"class="green-squares"></td>
-  </tr>
-  <tr>
-    <td class="non-game-squares" colspan="5"></td>
-    <td id="46" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td id="be-3" class="blue-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="34" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares" colspan="5"></td>
-  </tr>
-  <tr>
-    <td class="non-game-squares"></td>
-    <td id="bs-0" class="blue-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="bs-1" class="blue-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="45"class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td id="be-2" class="blue-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="35" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td id="gs-0" class="green-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="gs-1" class="green-squares"></td>
-    <td class="non-game-squares"></td>
-  </tr>
-  <tr>
-    <td class="non-game-squares" colspan="5"></td>
-    <td id="44" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td id="be-1" class="blue-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="36" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares" colspan="5"></td>
-  </tr>
-  <tr>
-    <td class="non-game-squares"></td>
-    <td id="bs-2" class="blue-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="bs-3" class="blue-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="43" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td id="be-0" class="blue-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="37" class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares"></td>
-    <td id="gs-2" class="green-squares"></td>
-    <td class="non-game-squares"></td>
-    <td id="gs-3" class="green-squares"></td>
-    <td class="non-game-squares"></td>
-  </tr>
-  <tr>
-    <td class="non-game-squares" colspan="5"></td>
-    <td id="bh" onClick="boardListener(event)" class="blue-squares"></td>
-    <td id="41" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="40" class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="39"class="normal-board" onClick="boardListener(event)" ></td>
-    <td id="38"class="normal-board" onClick="boardListener(event)" ></td>
-    <td class="non-game-squares" colspan="5"></td>
-  </tr>
-</table>
-<div class=button onClick="deal()">
-  <div class="button_label">Deal</div>
-</div>
-<div style="height: 1%"></div>
-<button id="p1c0" onClick="card0Listener()" ontouchstart="card0Listener()" alt="No Card" class="cards" style="width:16%;height:20%;display:inline-block;background-image: url(images/PNG-cards-1.3/haas.jpg);background-size:100% 100%;"></button>
-<button id="p1c1" onClick="card1Listener()" ontouchstart="card1Listener()" alt="No Card" class="cards" style="width:16%;height:20%;display:inline-block;background-image: url(images/PNG-cards-1.3/haas.jpg);background-size:100% 100%;"></div>
-<button id="p1c2" onClick="card2Listener()" ontouchStart="card2Listener()" alt="No Card" class="cards" style="width:16%;height:20%;display:inline-block;background-image: url(images/PNG-cards-1.3/haas.jpg);background-size:100% 100%;"></div>
-<button id="p1c3" onClick="card3Listener()" ontouchstart="card3Listener()" alt="No Card" class="cards" style="width:16%;height:20%;display:inline-block;background-image: url(images/PNG-cards-1.3/haas.jpg);background-size:100% 100%;"></div>
-<button id="p1c4" onClick="card4Listener()" ontouchstart="card4Listener()" alt="No Card" class="cards" style="width:16%;height:20%;display:inline-block;background-image: url(images/PNG-cards-1.3/haas.jpg);background-size:100% 100%;"></div>
+  <table class="tg">
+    <tr>
+      <td class="non-game-squares" colspan="5"></td>
+      <td id="10" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="11" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="12" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="13" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="yh" class="yellow-squares"></td>
+      <td class="non-game-squares" colspan="5">
+        </th>
+    </tr>
+    <tr>
+      <td class="non-game-squares"></td>
+      <td id="rs-0" class="red-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="rs-1" class="red-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="9" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td id="ye-0" class="yellow-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="15" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td id="ys-0" class="yellow-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="ys-1" class="yellow-squares"></td>
+      <td class="non-game-squares"></td>
+    </tr>
+    <tr>
+      <td class="non-game-squares" colspan="5"></td>
+      <td id="8" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td id="ye-1" class="yellow-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="16" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares" colspan="5"></td>
+    </tr>
+    <tr>
+      <td class="non-game-squares"></td>
+      <td id="rs-2" class="red-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="rs-3" class="red-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="7" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td id="ye-2" class="yellow-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="17" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td id="ys-2" class="yellow-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="ys-3" class="yellow-squares"></td>
+      <td class="non-game-squares"></td>
+    </tr>
+    <tr>
+      <td class="non-game-squares" colspan="5"></td>
+      <td id="6" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td id="ye-3" class="yellow-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="18" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares" colspan="5"></td>
+    </tr>
+    <tr>
+      <td id="rh" class="red-squares"></td>
+      <td id="1" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="2" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="3" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="4" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="5" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="19" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="20" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="21" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="22" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="23" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="24" class="normal-board" onClick="boardListener(event)"></td>
+    </tr>
+    <tr>
+      <td id="55" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="center-square" class="center-square" colspan="3" rowspan="3"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="25" class="normal-board" onClick="boardListener(event)"></td>
+    </tr>
+    <tr>
+      <td id="54" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="re-0" class="red-squares"></td>
+      <td id="re-1" class="red-squares"></td>
+      <td id="re-2" class="red-squares"></td>
+      <td id="re-3" class="red-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="ge-3" class="green-squares"></td>
+      <td id="ge-2" class="green-squares"></td>
+      <td id="ge-1" class="green-squares"></td>
+      <td id="ge-0" class="green-squares"></td>
+      <td id="26" class="normal-board" onClick="boardListener(event)"></td>
+    </tr>
+    <tr>
+      <td id="53" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="27" class="normal-board" onClick="boardListener(event)"></td>
+    </tr>
+    <tr>
+      <td id="52" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="51" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="50" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="49" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="48" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="47" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="33" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="32" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="31" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="30" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="29" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="gh" class="green-squares"></td>
+    </tr>
+    <tr>
+      <td class="non-game-squares" colspan="5"></td>
+      <td id="46" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td id="be-3" class="blue-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="34" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares" colspan="5"></td>
+    </tr>
+    <tr>
+      <td class="non-game-squares"></td>
+      <td id="bs-0" class="blue-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="bs-1" class="blue-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="45" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td id="be-2" class="blue-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="35" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td id="gs-0" class="green-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="gs-1" class="green-squares"></td>
+      <td class="non-game-squares"></td>
+    </tr>
+    <tr>
+      <td class="non-game-squares" colspan="5"></td>
+      <td id="44" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td id="be-1" class="blue-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="36" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares" colspan="5"></td>
+    </tr>
+    <tr>
+      <td class="non-game-squares"></td>
+      <td id="bs-2" class="blue-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="bs-3" class="blue-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="43" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td id="be-0" class="blue-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="37" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares"></td>
+      <td id="gs-2" class="green-squares"></td>
+      <td class="non-game-squares"></td>
+      <td id="gs-3" class="green-squares"></td>
+      <td class="non-game-squares"></td>
+    </tr>
+    <tr>
+      <td class="non-game-squares" colspan="5"></td>
+      <td id="bh" onClick="boardListener(event)" class="blue-squares"></td>
+      <td id="41" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="40" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="39" class="normal-board" onClick="boardListener(event)"></td>
+      <td id="38" class="normal-board" onClick="boardListener(event)"></td>
+      <td class="non-game-squares" colspan="5"></td>
+    </tr>
+  </table>
+  <div class=button onClick="deal()">
+    <div class="button_label">Deal</div>
+  </div>
+  <div style="height: 1%"></div>
+  <button id="p1c0" onClick="card0Listener()" ontouchstart="card0Listener()" alt="No Card" class="cards"
+    style="width:16%;height:20%;display:inline-block;background-image: url(images/PNG-cards-1.3/haas.jpg);background-size:100% 100%;"></button>
+  <button id="p1c1" onClick="card1Listener()" ontouchstart="card1Listener()" alt="No Card" class="cards"
+    style="width:16%;height:20%;display:inline-block;background-image: url(images/PNG-cards-1.3/haas.jpg);background-size:100% 100%;">
+    </div>
+    <button id="p1c2" onClick="card2Listener()" ontouchStart="card2Listener()" alt="No Card" class="cards"
+      style="width:16%;height:20%;display:inline-block;background-image: url(images/PNG-cards-1.3/haas.jpg);background-size:100% 100%;">
+      </div>
+      <button id="p1c3" onClick="card3Listener()" ontouchstart="card3Listener()" alt="No Card" class="cards"
+        style="width:16%;height:20%;display:inline-block;background-image: url(images/PNG-cards-1.3/haas.jpg);background-size:100% 100%;">
+        </div>
+        <button id="p1c4" onClick="card4Listener()" ontouchstart="card4Listener()" alt="No Card" class="cards"
+          style="width:16%;height:20%;display:inline-block;background-image: url(images/PNG-cards-1.3/haas.jpg);background-size:100% 100%;">
+          </div>
 </body>
+
 </html>
