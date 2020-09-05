@@ -1,12 +1,17 @@
 var airconsole;
 var re = /images\/PNG-cards-1.3\/(.*)_of_/;
 var myTurn = false;
+var start = false;
+var selectedPiece;
+var playerName
+
 /**
  * Sets up the communication to the screen.
  */
 function init() {
-    console.log("Controller init function");
     airconsole = new AirConsole({ "orientation": "portrait" });
+    setBoardBasedOnState();
+    var tp = document.getElementById("rp-0").addEventListener("click", pieceListener);
 
     /*
     * Checks if this device is part of the active game.
@@ -14,7 +19,8 @@ function init() {
     airconsole.onActivePlayersChange = function (player) {
         var div = document.getElementById("player_id");
         if (player !== undefined) {
-            div.innerHTML = (["Player One", "Player Two", "Player Three", "Player Four"][player]);
+            playerName = (["Player One", "Player Two", "Player Three", "Player Four"][player]);
+            div.innerHTML = playerName;
             div.style.color = (["#3531ff", "#fe0000", "#fcff2f", "#009901"][player]);
         } else {
             div.innerHTML = "It's a 2 player game!!";
@@ -36,6 +42,9 @@ function init() {
                 doc.style.backgroundImage = new_value.playedCard;
             }
         });
+
+        //Will Call from here later JAM UNCOMMENT
+        // setBoardBasedOnState();
     };
 
     airconsole.onMessage = function (device_id, data) {
@@ -66,9 +75,14 @@ function init() {
     airconsole.on(YOUR_TURN, function (device_id, params) {
         myTurn = true;
         var div = document.getElementById("player_id");
-        var newHtml = div.innerHTML + " Its Your Turn!";
-        div.innerHTML = newHtml;
+        div.innerHTML = "Its Your Turn!";
     });
+}
+
+function pieceListener() {
+    var piece = document.getElementById("rp-0");
+    piece.style.backgroundColor="darkred";
+    piece.style.borderColor="black";
 }
 
 
@@ -131,9 +145,7 @@ function makeMove(cardValue, element) {
         }
 
         var div = document.getElementById("player_id");
-        var str = div.innerHTML;
-        var newHtml = str.substring(0, str.indexOf(" Its Your Turn!"));
-        div.innerHTML = newHtml;
+        div.innerHTML = playerName;
 
         myTurn = false;
         airconsole.sendEvent(AirConsole.SCREEN, MOVE, { cValue: cardValue });
@@ -147,8 +159,12 @@ function makeMove(cardValue, element) {
 }
 
 // ************************
-//  Card Listners
+//  Listners
 // ************************
+
+function boardListener(event) {
+    movePieceToSquare("rp-0", event.srcElement.id);
+}
 
 function card0Listener() {
     if (myTurn) {
