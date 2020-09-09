@@ -16,9 +16,13 @@ html, body {
 .button {
   display: block;
   height: 5%;
-  width: 98%;
+  width: 100%;
   background-color: #222;
   position: relative;
+  font-family: 'PressStart2P', sans-serif;
+  color: white;
+  text-align: center;
+  background-color: black;
 }
 
 .button_label {

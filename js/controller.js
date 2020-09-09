@@ -1,11 +1,14 @@
 var airconsole;
 var re = /images\/PNG-cards-1.3\/(.*)_of_/;
 var myTurn = false;
-var start = false;
 var selectedPiece;
 var playerName
 var pieceBoarderColorArray;
 var pieceBackgroundColorArray;
+
+var moveCard;
+var movePiece;
+var moveSquare;
 
 
 /**
@@ -25,7 +28,7 @@ function init() {
         if (player !== undefined) {
             playerName = (["Player One", "Player Two", "Player Three", "Player Four"][player]);
             div.innerHTML = playerName;
-            div.style.color = (["#3531ff", "#fe0000", "#fcff2f", "#009901"][player]);
+            div.style.color = (["red", "yellow", "green", "blue"][player]);
             setupPieceListeners(player);
         } else {
             div.innerHTML = "It's a 2 player game!!";
@@ -81,6 +84,8 @@ function init() {
         myTurn = true;
         var div = document.getElementById("player_id");
         div.innerHTML = "Its Your Turn!";
+        
+    document.getElementById("actionButton").disabled = false;
     });
 }
 
@@ -93,12 +98,22 @@ function init() {
  * @param amount
  */
 function deal() {
+    document.getElementById("actionButton").disabled = true;
     airconsole.sendEvent(AirConsole.SCREEN, DEAL, {});
 }
 
 // ************************
 //  Move Logic
 // ************************
+
+function checkValidMove() {
+    if (moveCard && movePiece  && moveSquare) {
+        var actionButton = element.getElementById("actionButton");
+        actionButton.disabled = true;
+    }
+}
+
+
 function makeMove(cardValue, element) {
     if (cardValue !== undefined) {
         switch (cardValue) {
