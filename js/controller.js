@@ -16,9 +16,9 @@ var moveSquare;
  */
 function init() {
     airconsole = new AirConsole({ "orientation": "portrait" });
-    setBoardBasedOnState();
+    // setBoardBasedOnState();
     // var tp = document.getElementById("rp-0").addEventListener("click", pieceListener);
-    setupPieceListeners(3);
+    // setupPieceListeners(3);
 
     /*
     * Checks if this device is part of the active game.
@@ -52,7 +52,7 @@ function init() {
         });
 
         //Will Call from here later JAM UNCOMMENT
-        // setBoardBasedOnState();
+        setBoardBasedOnState();
     };
 
     airconsole.onMessage = function (device_id, data) {
@@ -62,10 +62,12 @@ function init() {
     airconsole.on(DEAL, function (device_id, params) {
         if (device_id === AirConsole.SCREEN && params.hand !== undefined) {
             for (i = 0; i < params.hand.length; i++) {
-                document.getElementById("p1c" + i).style.backgroundImage = "url(images/PNG-cards-1.3/" + params.hand[i] + ".png)";
+                let element = document.getElementById("p1c" + i);
+                element.style.backgroundImage = "url(images/PNG-cards-1.3/" + params.hand[i] + ".png)";
+                element.style.display = "inline-block";
             }
             if (params.hand.length === 4) {
-                document.getElementById("p1c4").style.backgroundImage = "none";
+                document.getElementById("p1c4").style.display = "none";
             }
         }
     });
@@ -97,19 +99,33 @@ function init() {
  * Tells the screen to deal the paddle of this player.
  * @param amount
  */
-function deal() {
-    document.getElementById("actionButton").disabled = true;
-    airconsole.sendEvent(AirConsole.SCREEN, DEAL, {});
+function dealOrMakeMove() {
+    if (moveCard && movePiece) {
+        document.getElementById("actionButton").disabled = true;
+        var cardValue = getCardValueFromElement(moveCard);
+        airconsole.sendEvent(AirConsole.SCREEN, MOVE, { cValue: cardValue });
+        moveCard.style.display = "none";
+        moveCard = null;
+        let element = document.getElementById(movePiece.pieceId)
+        element.style.borderColor = pieceBoarderColorArray[0];
+        element.style.backgroundColor = pieceBackgroundColorArray[0];
+        movePiece = null;
+
+    }
+    else {
+        airconsole.sendEvent(AirConsole.SCREEN, DEAL, {});
+    }
 }
 
 // ************************
 //  Move Logic
 // ************************
 
-function checkValidMove() {
+function checkAndBuildMove() {
     if (moveCard && movePiece  && moveSquare) {
-        var actionButton = element.getElementById("actionButton");
-        actionButton.disabled = true;
+        return true;
+        // var actionButton = element.getElementById("actionButton");
+        // actionButton.disabled = true;
     }
 }
 
@@ -163,11 +179,12 @@ function makeMove(cardValue, element) {
         var div = document.getElementById("player_id");
         div.innerHTML = playerName;
 
-        myTurn = false;
+        // myTurn = false;
         airconsole.sendEvent(AirConsole.SCREEN, MOVE, { cValue: cardValue });
         // var cs = document.getElementById("centerSquare");
         // cs.style.backgroundImage = element.style.backgroundImage;
-        element.style.backgroundImage = "none";
+        // element.style.backgroundImage = "none";
+        element.style.display = "none";
         // Select marble and make move
         return true;
     }
@@ -220,54 +237,45 @@ function setupPieceListeners(player) {
 }
 
 function pieceListener(event) {
+    if (movePiece) {
+        var oldPiece = document.getElementById(movePiece.pieceId); 
+        oldPiece.style.backgroundColor = pieceBackgroundColorArray[0];
+        oldPiece.style.borderColor = pieceBoarderColorArray[0];
+    }
+
     var piece = document.getElementById(event.srcElement.id);
     piece.style.backgroundColor = pieceBackgroundColorArray[1];
     piece.style.borderColor = pieceBoarderColorArray[1];
+    movePiece = createPiece(event.srcElement.id, null);
 }
 
 function boardListener(event) {
-    movePieceToSquare("rp-0", event.srcElement.id);
+    let id = movePiece.pieceId;
+    movePieceToSquare(id, event.srcElement.id);
 }
 
-function card0Listener() {
+function setCardSizes(selectedId) {
+    var cardArray = document.getElementsByClassName("cards");
+    Array.prototype.map.call(cardArray, card => {
+        if (card.id === selectedId ) {
+            card.style.width = "20%";
+        } else {
+            card.style.width = "15%";
+        }
+    });
+}
+
+function cardListener(event) {
     if (myTurn) {
-        let element = document.getElementById("p1c0");
-        var cardValue = getCardValueFromElement(element);
-        makeMove(cardValue, element);
+        let id = event.srcElement.id;
+        let element = document.getElementById(id);
+        moveCard = element;
+        // var cardValue = getCardValueFromElement(element);
+        setCardSizes(id);
+        // makeMove(cardValue, element);
     }
 }
 
-function card1Listener() {
-    if (myTurn) {
-        let element = document.getElementById("p1c1");
-        var cardValue = getCardValueFromElement(element);
-        makeMove(cardValue, element);
-    }
-}
-
-function card2Listener() {
-    if (myTurn) {
-        let element = document.getElementById("p1c2");
-        var cardValue = getCardValueFromElement(element);
-        makeMove(cardValue, element);
-    }
-}
-
-function card3Listener() {
-    if (myTurn) {
-        let element = document.getElementById("p1c3");
-        var cardValue = getCardValueFromElement(element);
-        makeMove(cardValue, element);
-    }
-}
-
-function card4Listener() {
-    if (myTurn) {
-        let element = document.getElementById("p1c4");
-        var cardValue = getCardValueFromElement(element);
-        makeMove(cardValue, element);
-    }
-}
 
 function getCardValueFromElement(element) {
     var backGroundImageUrl = element.style.backgroundImage;
