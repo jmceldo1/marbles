@@ -61,6 +61,7 @@ function init() {
 
     airconsole.on(DEAL, function (device_id, params) {
         if (device_id === AirConsole.SCREEN && params.hand !== undefined) {
+            setCardSizes("");
             for (i = 0; i < params.hand.length; i++) {
                 let element = document.getElementById("p1c" + i);
                 element.style.backgroundImage = "url(images/PNG-cards-1.3/" + params.hand[i] + ".png)";
@@ -74,6 +75,7 @@ function init() {
 
     airconsole.on(CLEAR, function (device_id, params) {
         if (device_id === AirConsole.SCREEN) {
+            setCardSizes("");
             var cardElements = document.getElementsByClassName("cards");
             var i; j = cardElements.length;
             for (var i = 0; i < j; i++) {
@@ -110,7 +112,8 @@ function dealOrMakeMove() {
         element.style.borderColor = pieceBoarderColorArray[0];
         element.style.backgroundColor = pieceBackgroundColorArray[0];
         movePiece = null;
-
+        var div = document.getElementById("player_id");
+        div.innerHTML = playerName;
     }
     else {
         airconsole.sendEvent(AirConsole.SCREEN, DEAL, {});
