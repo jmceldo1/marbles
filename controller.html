@@ -34,6 +34,18 @@
   <button id="bp-2" class="blue-pieces"></button>
   <button id="bp-3" class="blue-pieces"></button>
 
+
+  <svg id="connectors" height="100%" width="100%" pointer-events="none">
+    <defs>
+        <marker id="markerArrow" markerWidth="13" markerHeight="13" refX="10" refY="6"
+               orient="auto">
+            <path d="M2,2 L2,11 L10,6 L2,2" />
+        </marker>
+    </defs>
+
+    <line x1="200" y1="0" x2="200" y2="100" class="arrow" />
+  </svg>
+
   <table class="tg">
     <tr>
       <td class="non-game-squares" colspan="5"></td>

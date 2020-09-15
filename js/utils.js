@@ -1,17 +1,17 @@
-function createPiece(id, location){
-    return {pieceId: id, location: location};
+function createPiece(id, location) {
+    return { pieceId: id, location: location };
 }
 
 function createPlayerMove(card, moves) {
-    return {cardUrl: card, moves: moves};
+    return { cardUrl: card, moves: moves };
 }
 
 function createMove(pieceId, previousLocation, newLocation) {
-    return {pieceId: pieceId, previousLocation: previousLocation, newLocation: newLocation};
+    return { pieceId: pieceId, previousLocation: previousLocation, newLocation: newLocation };
 }
 
-function setBoardBasedOnState() {  
-    
+function setBoardBasedOnState() {
+
     movePieceToSquare("rp-0", "rs-0");
     movePieceToSquare("rp-1", "rs-1");
     movePieceToSquare("rp-2", "rs-2");
@@ -37,33 +37,43 @@ function setBoardBasedOnState() {
 function movePieceToSquare(pieceId, elementId) {
     var piece = document.getElementById(pieceId);
     var element = document.getElementById(elementId);
-    var elementOffsets = getOffset(element);
+    var elementOffsets = getOffset(element, false);
     piece.style.left = elementOffsets.left;
     piece.style.top = elementOffsets.top;
 }
- 
-function getOffset( el ) {
-    var _x = 0;
-    var _y = 0;
-    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
-        _x += el.offsetLeft - el.scrollLeft;
-        _y += el.offsetTop - el.scrollTop;
-        el = el.offsetParent;
+
+function getOffset(el, center) {
+    if (el) {
+        var _x;
+        var _y;
+        if (center) {
+            _x = el.offsetWidth/2;
+            _y = el.offsetHeight/2;
+        } else {
+            _x = 0;
+            _y = 0;
+        }
+        while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+            _x += el.offsetLeft - el.scrollLeft;
+            _y += el.offsetTop - el.scrollTop;
+            el = el.offsetParent;
+        }
+
+        return { top: _y, left: _x };
     }
-    return { top: _y, left: _x };
 }
 
-var boardArray = [{piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null}, {piece: null}, {piece: null},{piece: null},
-    {piece: null}, {piece: null}, {piece: null, home: [{id:"ye-0", piece:null}, {id:"ye-1", piece:null},{id:"ye-2", piece:null}, {id:"ye-3", piece:null}]}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null, home: [{id:"ge-0", piece:null}, {id:"ge-1", piece:null},{id:"ge-2", piece:null}, {id:"ge-3", piece:null}]}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null, home: [{id:"be-0", piece:null}, {id:"be-1", piece:null},{id:"be-2", piece:null}, {id:"be-3", piece:null}]}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null, home: [{id:"re-0", piece:null}, {id:"re-1", piece:null},{id:"re-2", piece:null}, {id:"re-3", piece:null}]}, {piece: null}]
+var boardArray = [{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null, home: [{ id: "ye-0", piece: null }, { id: "ye-1", piece: null }, { id: "ye-2", piece: null }, { id: "ye-3", piece: null }] }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null, home: [{ id: "ge-0", piece: null }, { id: "ge-1", piece: null }, { id: "ge-2", piece: null }, { id: "ge-3", piece: null }] }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null, home: [{ id: "be-0", piece: null }, { id: "be-1", piece: null }, { id: "be-2", piece: null }, { id: "be-3", piece: null }] }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null, home: [{ id: "re-0", piece: null }, { id: "re-1", piece: null }, { id: "re-2", piece: null }, { id: "re-3", piece: null }] }, { piece: null }]
 
 
 

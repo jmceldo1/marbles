@@ -16,9 +16,9 @@ var moveSquare;
  */
 function init() {
     airconsole = new AirConsole({ "orientation": "portrait" });
-    // setBoardBasedOnState();
+    setBoardBasedOnState();
     // var tp = document.getElementById("rp-0").addEventListener("click", pieceListener);
-    // setupPieceListeners(3);
+    setupPieceListeners(3);
 
     /*
     * Checks if this device is part of the active game.
@@ -182,13 +182,8 @@ function makeMove(cardValue, element) {
         var div = document.getElementById("player_id");
         div.innerHTML = playerName;
 
-        // myTurn = false;
         airconsole.sendEvent(AirConsole.SCREEN, MOVE, { cValue: cardValue });
-        // var cs = document.getElementById("centerSquare");
-        // cs.style.backgroundImage = element.style.backgroundImage;
-        // element.style.backgroundImage = "none";
         element.style.display = "none";
-        // Select marble and make move
         return true;
     }
     return false;
@@ -253,8 +248,21 @@ function pieceListener(event) {
 }
 
 function boardListener(event) {
+    console.log("In board listener");
     let id = movePiece.pieceId;
     movePieceToSquare(id, event.srcElement.id);
+
+
+    let rp1 = document.getElementById("rp-1");
+    let rp1Coord = getOffset(rp1, true);
+    let square = document.getElementById(event.srcElement.id);
+    let SquareCoord = getOffset(square, true);
+    let arrow = document.getElementsByTagName("line")[0];
+    arrow.x1.baseVal.value = rp1Coord.left;
+    arrow.y1.baseVal.value = rp1Coord.top;
+    arrow.x2.baseVal.value = SquareCoord.left;
+    arrow.y2.baseVal.value = SquareCoord.top;
+
 }
 
 function setCardSizes(selectedId) {
@@ -275,7 +283,6 @@ function cardListener(event) {
         moveCard = element;
         // var cardValue = getCardValueFromElement(element);
         setCardSizes(id);
-        // makeMove(cardValue, element);
     }
 }
 
