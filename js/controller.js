@@ -9,6 +9,9 @@ var pieceBackgroundColorArray;
 var moveCard;
 var movePiece;
 var moveSquare;
+var move;
+
+var pieceMap;
 
 
 /**
@@ -16,9 +19,11 @@ var moveSquare;
  */
 function init() {
     airconsole = new AirConsole({ "orientation": "portrait" });
-    setBoardBasedOnState();
+    pieceMap = setBoardBasedOnState();
+    console.log(pieceMap);
     // var tp = document.getElementById("rp-0").addEventListener("click", pieceListener);
-    setupPieceListeners(3);
+    // setupPieceListeners(3);
+    
 
     /*
     * Checks if this device is part of the active game.
@@ -88,8 +93,8 @@ function init() {
         myTurn = true;
         var div = document.getElementById("player_id");
         div.innerHTML = "Its Your Turn!";
-        
-    document.getElementById("actionButton").disabled = false;
+
+        document.getElementById("actionButton").disabled = false;
     });
 }
 
@@ -102,6 +107,19 @@ function init() {
  * @param amount
  */
 function dealOrMakeMove() {
+    if (move) {
+        var test = move[0];
+        movePieceToSquare(test.pieceId, test.location);
+
+
+        move = null;
+    }
+
+
+
+
+
+    // checkAndBuildMove();
     if (moveCard && movePiece) {
         document.getElementById("actionButton").disabled = true;
         var cardValue = getCardValueFromElement(moveCard);
@@ -125,69 +143,61 @@ function dealOrMakeMove() {
 // ************************
 
 function checkAndBuildMove() {
-    if (moveCard && movePiece  && moveSquare) {
-        return true;
-        // var actionButton = element.getElementById("actionButton");
-        // actionButton.disabled = true;
-    }
-}
+    if (moveCard && movePiece) {
+        var card = getCardValueFromElement();
+        var cardValueMatcher = card.match(re);
+        if (cardValueMatcher) {
+            card = cardValueMatcher[1];
+            console.log("Card Value to be played: " + card);
+
+            if (SPECIAL_CARDS.includes(card)) {
+                console.log("Attempting to handle a Stupid Piece");
+            } else if (NORMAL_CARDS.includes(card)) {
+                console.log("Attempting to handle a normal piece");
+                if (movePiece.location.includes("s-") && card === 'ace') {
+                    handleSpawnCard();
+                }
+
+            } else if (SPAWN_CARDS.includes(card)) {
+                console.log("Attempting to handle a spawn piece");
+                handleSpawnCard();
+
+            } else {
+                console.log("!!! Unknown Card value: " + card);
+            }
 
 
-function makeMove(cardValue, element) {
-    if (cardValue !== undefined) {
-        switch (cardValue) {
-            case "2":
-                //Move piece forward 2 spaces
-                break;
-            case "3":
-                //Move piece forward 3 spaces
-                break;
-            case "4":
-                //Move piece backwards 4 spaces
-                break;
-            case "5":
-                //Move piece forward 5 spaces
-                break;
-            case "6":
-                //Move piece forward 6 spaces
-                break;
-            case "7":
-                //Move 2 pieces a total of 7 sapces
-                break;
-            case "8":
-                //Move piece forward 8 spaces
-                break;
-            case "9":
-                //Move piece forward 9 spaces
-                break;
-            case "10":
-                //Move piece forward 10 spaces
-                break;
-            case "jack":
-                //Swap the position of any two pieces
-                break;
-            case "queen":
-                //Move piece forward 12 spaces
-                break;
-            case "king":
-                // Move a piece out of Start
-                break;
-            case "ace":
-                //Move a piece out of Start or 1 space
-                break;
-            default:
 
         }
 
-        var div = document.getElementById("player_id");
-        div.innerHTML = playerName;
 
-        airconsole.sendEvent(AirConsole.SCREEN, MOVE, { cValue: cardValue });
-        element.style.display = "none";
-        return true;
+
     }
-    return false;
 }
+
+function handleSpawnCard() {
+    let id = movePiece.pieceId;
+    let rp1 = document.getElementById(id);
+    let square;
+    if (id.includes("rp-")) {
+        square = document.getElementById("rh");
+    } else if (id.includes("yp-")) {
+        square = document.getElementById("yh");
+    }
+    else if (id.includes("gp-")) {
+        square = document.getElementById("gh");
+    }
+    else if (id.includes("bp-")) {
+        square = document.getElementById("bh");
+    }
+
+    drawArrowBetweenDivs(rp1, square, null);
+    movePiece.location = square.id;
+
+    move = [movePiece];
+
+}
+
 
 // ************************
 //  Listners
@@ -236,7 +246,7 @@ function setupPieceListeners(player) {
 
 function pieceListener(event) {
     if (movePiece) {
-        var oldPiece = document.getElementById(movePiece.pieceId); 
+        var oldPiece = document.getElementById(movePiece.pieceId);
         oldPiece.style.backgroundColor = pieceBackgroundColorArray[0];
         oldPiece.style.borderColor = pieceBoarderColorArray[0];
     }
@@ -244,34 +254,39 @@ function pieceListener(event) {
     var piece = document.getElementById(event.srcElement.id);
     piece.style.backgroundColor = pieceBackgroundColorArray[1];
     piece.style.borderColor = pieceBoarderColorArray[1];
-    movePiece = createPiece(event.srcElement.id, null);
+    movePiece = pieceMap.get(event.srcElement.id);
+
+    if (moveCard) {
+        checkAndBuildMove();
+
+    }
 }
 
 function boardListener(event) {
     console.log("In board listener");
     let id = movePiece.pieceId;
-    movePieceToSquare(id, event.srcElement.id);
+    // movePieceToSquare(id, event.srcElement.id);
 
 
-    let rp1 = document.getElementById("rp-1");
-    let rp1Coord = getOffset(rp1, true);
-    let square = document.getElementById(event.srcElement.id);
-    let SquareCoord = getOffset(square, true);
-    let arrow = document.getElementsByTagName("line")[0];
-    arrow.x1.baseVal.value = rp1Coord.left;
-    arrow.y1.baseVal.value = rp1Coord.top;
-    arrow.x2.baseVal.value = SquareCoord.left;
-    arrow.y2.baseVal.value = SquareCoord.top;
-
+    // if (movePiece) {
+    //     let rp1 = document.getElementById(id);
+    //     let square = document.getElementById(event.srcElement.id);
+    //     drawArrowBetweenDivs(rp1, square, null);
+    // }
 }
 
 function setCardSizes(selectedId) {
     var cardArray = document.getElementsByClassName("cards");
     Array.prototype.map.call(cardArray, card => {
-        if (card.id === selectedId ) {
-            card.style.width = "20%";
+        if (selectedId) {
+            if (card.id === selectedId) {
+                card.style.width = "20%";
+            } else {
+                card.style.width = "15%";
+            }
         } else {
-            card.style.width = "15%";
+            //If no selectedId then reset all cards
+            card.style.width = "16%";
         }
     });
 }
@@ -288,6 +303,9 @@ function cardListener(event) {
 
 
 function getCardValueFromElement(element) {
+    if (!element) {
+        element = moveCard;
+    }
     var backGroundImageUrl = element.style.backgroundImage;
     if (backGroundImageUrl !== undefined) {
         return backGroundImageUrl;
