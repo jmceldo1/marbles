@@ -10,7 +10,18 @@ function createMove(pieceId, previousLocation, newLocation) {
     return { pieceId: pieceId, previousLocation: previousLocation, newLocation: newLocation };
 }
 
-function setBoardBasedOnState() {
+function setBoardBasedOnState(state) {
+    if(state) {
+        console.log("Setting board based on state");
+        state.pieceMap.forEach(piece => {
+            movePieceToSquare(piece.pieceId, piece.location);
+        });
+
+    } else {
+
+    
+
+
 
     movePieceToSquare("rp-0", "rs-0");
     movePieceToSquare("rp-1", "rs-1");
@@ -55,6 +66,7 @@ function setBoardBasedOnState() {
     console.log(pieceMap);
 
     return pieceMap;
+    }
 
 }
 

@@ -6,6 +6,9 @@ var p1 = [];
 var p2 = [];
 var p3 = [];
 var p4 = [];
+
+var state;
+
 var boardArray = [{piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
     {piece: null}, {piece: null}, {piece: null}, {piece: null},{piece: null},
     {piece: null}, {piece: null}, {piece: null, home: [{id:"ye-0", piece:null}, {id:"ye-1", piece:null},{id:"ye-2", piece:null}, {id:"ye-3", piece:null}]}, {piece: null}, {piece: null},
@@ -19,25 +22,25 @@ var boardArray = [{piece: null}, {piece: null}, {piece: null}, {piece: null}, {p
     {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null, home: [{id:"re-0", piece:null}, {id:"re-1", piece:null},{id:"re-2", piece:null}, {id:"re-3", piece:null}]}, {piece: null}]
 
 
-var redPiece0 = createPiece("rp-0", "rs-0");
-var redPiece1 = createPiece("rp-1", "rs-1");
-var redPiece2 = createPiece("rp-2", "rs-2");
-var redPiece3 = createPiece("rp-3", "rs-3");
+// var redPiece0 = createPiece("rp-0", "rs-0");
+// var redPiece1 = createPiece("rp-1", "rs-1");
+// var redPiece2 = createPiece("rp-2", "rs-2");
+// var redPiece3 = createPiece("rp-3", "rs-3");
 
-var yellowPiece0 = createPiece("yp-0", "ys-0");
-var yellowPiece1 = createPiece("yp-1", "ys-1");
-var yellowPiece2 = createPiece("yp-2", "ys-2");
-var yellowPiece3 = createPiece("yp-3", "ys-3");
+// var yellowPiece0 = createPiece("yp-0", "ys-0");
+// var yellowPiece1 = createPiece("yp-1", "ys-1");
+// var yellowPiece2 = createPiece("yp-2", "ys-2");
+// var yellowPiece3 = createPiece("yp-3", "ys-3");
 
-var greenPiece0 = createPiece("gp-0", "gs-0");
-var greenPiece1 = createPiece("gp-1", "gs-1");
-var greenPiece2 = createPiece("gp-2", "gs-2");
-var greenPiece3 = createPiece("gp-3", "gs-3");
+// var greenPiece0 = createPiece("gp-0", "gs-0");
+// var greenPiece1 = createPiece("gp-1", "gs-1");
+// var greenPiece2 = createPiece("gp-2", "gs-2");
+// var greenPiece3 = createPiece("gp-3", "gs-3");
 
-var bluePiece0 = createPiece("bp-0", "bs-0");
-var bluePiece1 = createPiece("bp-1", "bs-1");
-var bluePiece2 = createPiece("bp-2", "bs-2");
-var bluePiece3 = createPiece("bp-3", "bs-3");
+// var bluePiece0 = createPiece("bp-0", "bs-0");
+// var bluePiece1 = createPiece("bp-1", "bs-1");
+// var bluePiece2 = createPiece("bp-2", "bs-2");
+// var bluePiece3 = createPiece("bp-3", "bs-3");
 
 /**
  * Sets up the communication to game pads.
@@ -50,9 +53,11 @@ function setupConsole() {
     };
 
     airconsole.onReady = function () {
+        state = buildInitialState();
+        setBoardBasedOnState(state);
         // Set an inital value for the position property
         setCustomState({
-            playedCard: "Hello"
+            state: state
         });
     };
 
@@ -85,14 +90,37 @@ function setupConsole() {
     airconsole.on(MOVE, function (device_id, params) {
         var player = airconsole.convertDeviceIdToPlayerNumber(device_id);
         if (player != undefined) {
-            yourTurn(player);
+            updateStateBasedOnMove(params);
+            // state.playedCard = params.cValue;
             setCustomState({
-                playedCard: params.cValue
+                state: state
             });
             var doc = document.getElementById("center-square");
-            doc.style.backgroundImage = params.cValue;
+            // doc.style.backgroundImage = params.cValue;
+            doc.style.backgroundImage = state.playedCard;
+
+            yourTurn(player);
         }
     });
+
+}
+
+function updateStateBasedOnMove(move) {
+    state.playedCard = move.cardUrl;
+    console.log(move);
+    if(move.moves) {
+        Array.prototype.map.call(move.moves, element=> {
+            let piece = state.pieceMap.get(element.pieceId);
+            if (piece && move.newLocation) {
+                piece.location = move.newLocation;
+            }
+
+        //Potentially erase and redraw arrows?
+
+        //Updated Board Array
+    });
+}
+
 }
 
 /**
@@ -131,7 +159,7 @@ function init() {
     canvas.height = canvas.clientHeight;
     window.onresize = (clearCanvas);
 
-    setBoardBasedOnState();
+    // setBoardBasedOnState();
 }
 
 function clearCanvas() {
@@ -254,4 +282,76 @@ function clearHands() {
 function yourTurn(recentlyPlayedPlayerNumber) {
     var nextPlayer = (recentlyPlayedPlayerNumber + 1) % numberOfPlayers;
     airconsole.sendEvent(airconsole.convertPlayerNumberToDeviceId(nextPlayer), YOUR_TURN, {});
+}
+
+function buildInitialState() {
+    console.log("Building Initial State for Screen");
+
+    // let redPiece0 = createPiece("rp-0", "rs-0");
+    // let redPiece1 = createPiece("rp-1", "rs-1");
+    // let redPiece2 = createPiece("rp-2", "rs-2");
+    // let redPiece3 = createPiece("rp-3", "rs-3");
+
+    // let yellowPiece0 = createPiece("yp-0", "ys-0");
+    // let yellowPiece1 = createPiece("yp-1", "ys-1");
+    // let yellowPiece2 = createPiece("yp-2", "ys-2");
+    // let yellowPiece3 = createPiece("yp-3", "ys-3");
+
+    // let greenPiece0 = createPiece("gp-0", "gs-0");
+    // let greenPiece1 = createPiece("gp-1", "gs-1");
+    // let greenPiece2 = createPiece("gp-2", "gs-2");
+    // let greenPiece3 = createPiece("gp-3", "gs-3");
+
+    // let bluePiece0 = createPiece("bp-0", "bs-0");
+    // let bluePiece1 = createPiece("bp-1", "bs-1");
+    // let bluePiece2 = createPiece("bp-2", "bs-2");
+    // let bluePiece3 = createPiece("bp-3", "bs-3");
+
+    var pieceMap = new Map();
+    pieceMap.set("rp-0", createPiece("rp-0", "rs-0"));
+    pieceMap.set("rp-1", createPiece("rp-1", "rs-1"));
+    pieceMap.set("rp-2", createPiece("rp-2", "rs-2"));
+    pieceMap.set("rp-3", createPiece("rp-3", "rs-3"));
+
+    pieceMap.set("yp-0", createPiece("yp-0", "ys-0"));
+    pieceMap.set("yp-1", createPiece("yp-1", "ys-1"));
+    pieceMap.set("yp-2", createPiece("yp-2", "ys-2"));
+    pieceMap.set("yp-3", createPiece("yp-3", "ys-3"));
+
+    pieceMap.set("gp-0", createPiece("gp-0", "gs-0"));
+    pieceMap.set("gp-1", createPiece("gp-1", "gs-1"));
+    pieceMap.set("gp-2", createPiece("gp-2", "gs-2"));
+    pieceMap.set("gp-3", createPiece("gp-3", "gs-3"));
+
+    pieceMap.set("bp-0", createPiece("bp-0", "bs-0"));
+    pieceMap.set("bp-1", createPiece("bp-1", "bs-1"));
+    pieceMap.set("bp-2", createPiece("bp-2", "bs-2"));
+    pieceMap.set("bp-3", createPiece("bp-3", "bs-3"));
+
+    return {
+        // rp0: redPiece0,
+        // rp1: redPiece1,
+        // rp2: redPiece2,
+        // rp3: redPiece3,
+
+        // yp0: yellowPiece0,
+        // yp1: yellowPiece1,
+        // yp2: yellowPiece2,
+        // yp3: yellowPiece3,
+
+        // gp0: greenPiece0,
+        // gp1: greenPiece1,
+        // gp2: greenPiece2,
+        // gp3: greenPiece3,
+
+        // bp0: bluePiece0,
+        // bp1: bluePiece1,
+        // bp2: bluePiece2,
+        // bp3: bluePiece3,
+
+        pieceMap: pieceMap,
+        boardArray: boardArray,
+        playedCard: "url(images/PNG-cards-1.3/haas.jpg)"
+    }
+
 }

@@ -51,8 +51,9 @@ function init() {
         // Observe the 'position' property of the screen
         this.observeCustomProperty(AirConsole.SCREEN, "data", function (new_value, old_value) {
             if (new_value) {
+
                 var doc = document.getElementById("center-square");
-                doc.style.backgroundImage = new_value.playedCard;
+                doc.style.backgroundImage = new_value.state.playedCard;
             }
         });
 
@@ -123,7 +124,10 @@ function dealOrMakeMove() {
     if (moveCard && movePiece) {
         document.getElementById("actionButton").disabled = true;
         var cardValue = getCardValueFromElement(moveCard);
-        airconsole.sendEvent(AirConsole.SCREEN, MOVE, { cValue: cardValue });
+        var playerMove = createPlayerMove(cardValue, []);
+
+        // airconsole.sendEvent(AirConsole.SCREEN, MOVE, { cValue: cardValue });
+        airconsole.sendEvent(AirConsole.SCREEN, MOVE, playerMove);
         moveCard.style.display = "none";
         moveCard = null;
         let element = document.getElementById(movePiece.pieceId)
