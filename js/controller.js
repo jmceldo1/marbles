@@ -51,14 +51,15 @@ function init() {
         // Observe the 'position' property of the screen
         this.observeCustomProperty(AirConsole.SCREEN, "data", function (new_value, old_value) {
             if (new_value) {
-
+                console.log(new_value);
+                setBoardBasedOnState(new_value);
                 var doc = document.getElementById("center-square");
-                doc.style.backgroundImage = new_value.state.playedCard;
+                doc.style.backgroundImage = new_value.playedCard;
             }
         });
 
         //Will Call from here later JAM UNCOMMENT
-        setBoardBasedOnState();
+        // setBoardBasedOnState();
     };
 
     airconsole.onMessage = function (device_id, data) {
@@ -124,7 +125,8 @@ function dealOrMakeMove() {
     if (moveCard && movePiece) {
         document.getElementById("actionButton").disabled = true;
         var cardValue = getCardValueFromElement(moveCard);
-        var playerMove = createPlayerMove(cardValue, []);
+        var move = createMove("yp-0", "", "yh");
+        var playerMove = createPlayerMove(cardValue, [move]);
 
         // airconsole.sendEvent(AirConsole.SCREEN, MOVE, { cValue: cardValue });
         airconsole.sendEvent(AirConsole.SCREEN, MOVE, playerMove);

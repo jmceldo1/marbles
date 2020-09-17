@@ -13,9 +13,12 @@ function createMove(pieceId, previousLocation, newLocation) {
 function setBoardBasedOnState(state) {
     if(state) {
         console.log("Setting board based on state");
+        console.log(state);
+        if(state.pieceMap){
         state.pieceMap.forEach(piece => {
             movePieceToSquare(piece.pieceId, piece.location);
         });
+    }
 
     } else {
 

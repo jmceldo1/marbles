@@ -9,17 +9,17 @@ var p4 = [];
 
 var state;
 
-var boardArray = [{piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null}, {piece: null}, {piece: null},{piece: null},
-    {piece: null}, {piece: null}, {piece: null, home: [{id:"ye-0", piece:null}, {id:"ye-1", piece:null},{id:"ye-2", piece:null}, {id:"ye-3", piece:null}]}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null, home: [{id:"ge-0", piece:null}, {id:"ge-1", piece:null},{id:"ge-2", piece:null}, {id:"ge-3", piece:null}]}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null, home: [{id:"be-0", piece:null}, {id:"be-1", piece:null},{id:"be-2", piece:null}, {id:"be-3", piece:null}]}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null},
-    {piece: null}, {piece: null}, {piece: null}, {piece: null}, {piece: null, home: [{id:"re-0", piece:null}, {id:"re-1", piece:null},{id:"re-2", piece:null}, {id:"re-3", piece:null}]}, {piece: null}]
+var boardArray = [{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null, home: [{ id: "ye-0", piece: null }, { id: "ye-1", piece: null }, { id: "ye-2", piece: null }, { id: "ye-3", piece: null }] }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null, home: [{ id: "ge-0", piece: null }, { id: "ge-1", piece: null }, { id: "ge-2", piece: null }, { id: "ge-3", piece: null }] }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null, home: [{ id: "be-0", piece: null }, { id: "be-1", piece: null }, { id: "be-2", piece: null }, { id: "be-3", piece: null }] }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
+{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null, home: [{ id: "re-0", piece: null }, { id: "re-1", piece: null }, { id: "re-2", piece: null }, { id: "re-3", piece: null }] }, { piece: null }]
 
 
 // var redPiece0 = createPiece("rp-0", "rs-0");
@@ -49,13 +49,16 @@ function setupConsole() {
     airconsole = new AirConsole();
 
     var setCustomState = function (value) {
-        airconsole.setCustomDeviceStateProperty("data", value);
+        console.log("Current State");
+        console.log(state);
+        console.log(value);
+        airconsole.setCustomDeviceStateProperty("data", value.state);
     };
 
     airconsole.onReady = function () {
         state = buildInitialState();
         setBoardBasedOnState(state);
-        // Set an inital value for the position property
+        // Set an inital value for the state property
         setCustomState({
             state: state
         });
@@ -108,19 +111,23 @@ function setupConsole() {
 function updateStateBasedOnMove(move) {
     state.playedCard = move.cardUrl;
     console.log(move);
-    if(move.moves) {
-        Array.prototype.map.call(move.moves, element=> {
+    if (move.moves) {
+        Array.prototype.map.call(move.moves, element => {
             let piece = state.pieceMap.get(element.pieceId);
-            if (piece && move.newLocation) {
-                piece.location = move.newLocation;
+            console.log("Updating piece: ");
+            console.log(piece);
+            if (piece && element.newLocation) {
+                piece.location = element.newLocation;
+                console.log(piece);
             }
 
-        //Potentially erase and redraw arrows?
+            //Potentially erase and redraw arrows?
 
-        //Updated Board Array
-    });
-}
+            //Updated Board Array
+        });
+    }
 
+    setBoardBasedOnState(state);
 }
 
 /**
