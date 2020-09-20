@@ -12,8 +12,8 @@ function createMove(pieceId, previousLocation, newLocation) {
 
 function setBoardBasedOnState(state) {
     if(state) {
-        console.log("Setting board based on state");
-        console.log(state);
+        // console.log("Setting board based on state");
+        // console.log(state);
         if(state.pieceMap){
         state.pieceMap.forEach(piece => {
             movePieceToSquare(piece.pieceId, piece.location);
@@ -66,7 +66,6 @@ function setBoardBasedOnState(state) {
     pieceMap.set("bp-1", createPiece("bp-1", "bs-1"));
     pieceMap.set("bp-2", createPiece("bp-2", "bs-2"));
     pieceMap.set("bp-3", createPiece("bp-3", "bs-3"));
-    console.log(pieceMap);
 
     return pieceMap;
     }

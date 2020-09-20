@@ -20,7 +20,6 @@ var pieceMap;
 function init() {
     airconsole = new AirConsole({ "orientation": "portrait" });
     pieceMap = setBoardBasedOnState();
-    console.log(pieceMap);
     // var tp = document.getElementById("rp-0").addEventListener("click", pieceListener);
     // setupPieceListeners(3);
     
@@ -51,7 +50,10 @@ function init() {
         // Observe the 'position' property of the screen
         this.observeCustomProperty(AirConsole.SCREEN, "data", function (new_value, old_value) {
             if (new_value) {
+                console.log("Recieved new state value below");
                 console.log(new_value);
+                // console.log("Stringified below");
+                // console.log(JSON.stringify(new_value));
                 setBoardBasedOnState(new_value);
                 var doc = document.getElementById("center-square");
                 doc.style.backgroundImage = new_value.playedCard;
@@ -154,7 +156,6 @@ function checkAndBuildMove() {
         var cardValueMatcher = card.match(re);
         if (cardValueMatcher) {
             card = cardValueMatcher[1];
-            console.log("Card Value to be played: " + card);
 
             if (SPECIAL_CARDS.includes(card)) {
                 console.log("Attempting to handle a Stupid Piece");
@@ -209,7 +210,6 @@ function handleSpawnCard() {
 //  Listners
 // ************************
 function setupPieceListeners(player) {
-    console.log("Setting up listeners for player: " + player);
     switch (player) {
         case 0:
             var elements = document.getElementsByClassName("red-pieces");
@@ -269,7 +269,6 @@ function pieceListener(event) {
 }
 
 function boardListener(event) {
-    console.log("In board listener");
     let id = movePiece.pieceId;
     // movePieceToSquare(id, event.srcElement.id);
 
