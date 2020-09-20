@@ -114,9 +114,10 @@ function setupConsole() {
 
 function updateStateBasedOnMove(move) {
     state.playedCard = move.cardUrl;
+    let tempMap = new Map(state.pieceMap);
     if (move.moves) {
         Array.prototype.map.call(move.moves, element => {
-            let piece = state.pieceMap.get(element.pieceId);
+            let piece = tempMap.get(element.pieceId);
             console.log("Updating piece: ");
             console.log(piece);
             if (piece && element.newLocation) {
@@ -130,6 +131,7 @@ function updateStateBasedOnMove(move) {
         });
     }
 
+    state.pieceMap = Array.from(tempMap.entries());
     setBoardBasedOnState(state);
 }
 
@@ -359,7 +361,7 @@ function buildInitialState() {
         // bp2: bluePiece2,
         // bp3: bluePiece3,
 
-        pieceMap: initialPieceMap,
+        pieceMap: Array.from(initialPieceMap.entries()),
         boardArray: boardArray,
         playedCard: "url(images/PNG-cards-1.3/haas.jpg)"
     }

@@ -12,10 +12,12 @@ function createMove(pieceId, previousLocation, newLocation) {
 
 function setBoardBasedOnState(state) {
     if(state) {
-        // console.log("Setting board based on state");
-        // console.log(state);
-        if(state.pieceMap){
-        state.pieceMap.forEach(piece => {
+        
+        let tempMap = new Map(state.pieceMap);
+        if(tempMap){
+        tempMap.forEach(piece => {
+            console.log("Moving Piece To square")
+            console.log(piece);
             movePieceToSquare(piece.pieceId, piece.location);
         });
     }
@@ -46,28 +48,28 @@ function setBoardBasedOnState(state) {
     movePieceToSquare("bp-2", "bs-2");
     movePieceToSquare("bp-3", "bs-3");
 
-    var pieceMap = new Map();
-    pieceMap.set("rp-0", createPiece("rp-0", "rs-0"));
-    pieceMap.set("rp-1", createPiece("rp-1", "rs-1"));
-    pieceMap.set("rp-2", createPiece("rp-2", "rs-2"));
-    pieceMap.set("rp-3", createPiece("rp-3", "rs-3"));
+    // var pieceMap = new Map();
+    // pieceMap.set("rp-0", createPiece("rp-0", "rs-0"));
+    // pieceMap.set("rp-1", createPiece("rp-1", "rs-1"));
+    // pieceMap.set("rp-2", createPiece("rp-2", "rs-2"));
+    // pieceMap.set("rp-3", createPiece("rp-3", "rs-3"));
 
-    pieceMap.set("yp-0", createPiece("yp-0", "ys-0"));
-    pieceMap.set("yp-1", createPiece("yp-1", "ys-1"));
-    pieceMap.set("yp-2", createPiece("yp-2", "ys-2"));
-    pieceMap.set("yp-3", createPiece("yp-3", "ys-3"));
+    // pieceMap.set("yp-0", createPiece("yp-0", "ys-0"));
+    // pieceMap.set("yp-1", createPiece("yp-1", "ys-1"));
+    // pieceMap.set("yp-2", createPiece("yp-2", "ys-2"));
+    // pieceMap.set("yp-3", createPiece("yp-3", "ys-3"));
 
-    pieceMap.set("gp-0", createPiece("gp-0", "gs-0"));
-    pieceMap.set("gp-1", createPiece("gp-1", "gs-1"));
-    pieceMap.set("gp-2", createPiece("gp-2", "gs-2"));
-    pieceMap.set("gp-3", createPiece("gp-3", "gs-3"));
+    // pieceMap.set("gp-0", createPiece("gp-0", "gs-0"));
+    // pieceMap.set("gp-1", createPiece("gp-1", "gs-1"));
+    // pieceMap.set("gp-2", createPiece("gp-2", "gs-2"));
+    // pieceMap.set("gp-3", createPiece("gp-3", "gs-3"));
 
-    pieceMap.set("bp-0", createPiece("bp-0", "bs-0"));
-    pieceMap.set("bp-1", createPiece("bp-1", "bs-1"));
-    pieceMap.set("bp-2", createPiece("bp-2", "bs-2"));
-    pieceMap.set("bp-3", createPiece("bp-3", "bs-3"));
+    // pieceMap.set("bp-0", createPiece("bp-0", "bs-0"));
+    // pieceMap.set("bp-1", createPiece("bp-1", "bs-1"));
+    // pieceMap.set("bp-2", createPiece("bp-2", "bs-2"));
+    // pieceMap.set("bp-3", createPiece("bp-3", "bs-3"));
 
-    return pieceMap;
+    // return pieceMap;
     }
 
 }

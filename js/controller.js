@@ -19,7 +19,6 @@ var pieceMap;
  */
 function init() {
     airconsole = new AirConsole({ "orientation": "portrait" });
-    pieceMap = setBoardBasedOnState();
     // var tp = document.getElementById("rp-0").addEventListener("click", pieceListener);
     // setupPieceListeners(3);
     
@@ -49,14 +48,12 @@ function init() {
     airconsole.onReady = function () {
         // Observe the 'position' property of the screen
         this.observeCustomProperty(AirConsole.SCREEN, "data", function (new_value, old_value) {
-            if (new_value) {
-                console.log("Recieved new state value below");
-                console.log(new_value);
-                // console.log("Stringified below");
-                // console.log(JSON.stringify(new_value));
-                setBoardBasedOnState(new_value);
+            if (new_value && new_value.state) {
+               
+                pieceMap = new Map(new_value.state.pieceMap);
+                setBoardBasedOnState(new_value.state);
                 var doc = document.getElementById("center-square");
-                doc.style.backgroundImage = new_value.playedCard;
+                doc.style.backgroundImage = new_value.state.playedCard;
             }
         });
 
