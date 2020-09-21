@@ -9,7 +9,7 @@ var pieceBackgroundColorArray;
 var moveCard;
 var movePiece;
 var moveSquare;
-var move;
+var playerMove;
 
 var pieceMap;
 
@@ -97,30 +97,14 @@ function init() {
  * @param amount
  */
 function dealOrMakeMove() {
-    if (move) {
-        var test = move[0];
-        // movePieceToSquare(test.pieceId, test.location);
+    if (playerMove) {
         console.log("Sending Move to Screen");
-        console.log(move);
+        console.log(playerMove);
         airconsole.sendEvent(AirConsole.SCREEN, MOVE, playerMove);
 
-
-        move = null;
-    }
-
-
-
-
-
-    // checkAndBuildMove();
-    if (moveCard && movePiece) {
         document.getElementById("actionButton").disabled = true;
-        var cardValue = getCardValueFromElement(moveCard);
-        var move = createMove("yp-0", "", "yh");
-        var playerMove = createPlayerMove(cardValue, [move]);
+        playerMove = null;
 
-        // airconsole.sendEvent(AirConsole.SCREEN, MOVE, { cValue: cardValue });
-        airconsole.sendEvent(AirConsole.SCREEN, MOVE, playerMove);
         moveCard.style.display = "none";
         moveCard = null;
         let element = document.getElementById(movePiece.pieceId)
@@ -130,6 +114,7 @@ function dealOrMakeMove() {
         var div = document.getElementById("player_id");
         div.innerHTML = playerName;
     }
+
     else {
         airconsole.sendEvent(AirConsole.SCREEN, DEAL, {});
     }
@@ -151,12 +136,12 @@ function checkAndBuildMove() {
             } else if (NORMAL_CARDS.includes(card)) {
                 console.log("Attempting to handle a normal piece");
                 if (movePiece.location.includes("s-") && card === 'ace') {
-                    handleSpawnCard();
+                    handleSpawnCard(card);
                 }
 
             } else if (SPAWN_CARDS.includes(card)) {
                 console.log("Attempting to handle a spawn piece");
-                handleSpawnCard();
+                handleSpawnCard(card);
 
             } else {
                 console.log("!!! Unknown Card value: " + card);
@@ -171,26 +156,29 @@ function checkAndBuildMove() {
     }
 }
 
-function handleSpawnCard() {
+function handleSpawnCard(card) {
     let id = movePiece.pieceId;
-    let rp1 = document.getElementById(id);
+    let potentialPiece = document.getElementById(id);
     let square;
+    let squareId;
     if (id.includes("rp-")) {
-        square = document.getElementById("rh");
+        squareId = "rh";
     } else if (id.includes("yp-")) {
-        square = document.getElementById("yh");
+        squareId = "yh";
     }
     else if (id.includes("gp-")) {
-        square = document.getElementById("gh");
+        squareId = "gh";
     }
     else if (id.includes("bp-")) {
-        square = document.getElementById("bh");
+        squareId = "bh";
     }
+    square = document.getElementById(squareId);
 
-    drawArrowBetweenDivs(rp1, square, null);
-    movePiece.location = square.id;
+    drawArrowBetweenDivs(potentialPiece, square, null);
 
-    move = [movePiece];
+    let move = createMove(id, null, squareId);
+
+    playerMove = createPlayerMove(card, [move]);
 
 }
 
@@ -258,15 +246,6 @@ function pieceListener(event) {
 }
 
 function boardListener(event) {
-    let id = movePiece.pieceId;
-    // movePieceToSquare(id, event.srcElement.id);
-
-
-    // if (movePiece) {
-    //     let rp1 = document.getElementById(id);
-    //     let square = document.getElementById(event.srcElement.id);
-    //     drawArrowBetweenDivs(rp1, square, null);
-    // }
 }
 
 function setCardSizes(selectedId) {
@@ -287,10 +266,13 @@ function setCardSizes(selectedId) {
 
 function cardListener(event) {
     if (myTurn) {
+        if (playerMove){
+            playerMove = null;
+            //Potentially want to reset selected piece as well
+        }
         let id = event.srcElement.id;
         let element = document.getElementById(id);
         moveCard = element;
-        // var cardValue = getCardValueFromElement(element);
         setCardSizes(id);
     }
 }
@@ -303,10 +285,5 @@ function getCardValueFromElement(element) {
     var backGroundImageUrl = element.style.backgroundImage;
     if (backGroundImageUrl !== undefined) {
         return backGroundImageUrl;
-        // var cardValueMatcher = backGroundImageUrl.match(re);
-        // if (cardValueMatcher !== undefined && cardValueMatcher !== null) {
-        //   element.style.backgroundImage = "none";
-        //   return cardValueMatcher[1];
-        // }
     }
 }

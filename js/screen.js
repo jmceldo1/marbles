@@ -71,8 +71,7 @@ function setupConsole() {
         if (player != undefined) {
             updateStateBasedOnMove(params);
             setCustomState({
-                state: state,
-                test:myMap
+                state: state
             });
             var doc = document.getElementById("center-square");
             doc.style.backgroundImage = state.playedCard;
