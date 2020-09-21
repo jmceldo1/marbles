@@ -1,11 +1,27 @@
+/**
+ * 
+ * @param {string} id 
+ * @param {string} location 
+ */
 function createPiece(id, location) {
     return { pieceId: id, location: location };
 }
 
+/**
+ * 
+ * @param {string} card 
+ * @param {[]} moves 
+ */
 function createPlayerMove(card, moves) {
     return { cardUrl: card, moves: moves };
 }
 
+/**
+ * 
+ * @param { string } pieceId 
+ * @param { string } previousLocation 
+ * @param { string } newLocation 
+ */
 function createMove(pieceId, previousLocation, newLocation) {
     return { pieceId: pieceId, previousLocation: previousLocation, newLocation: newLocation };
 }
@@ -44,6 +60,11 @@ function setBoardBasedOnState(state) {
 
 }
 
+/**
+ * 
+ * @param {string} pieceId 
+ * @param {string} elementId 
+ */
 function movePieceToSquare(pieceId, elementId) {
     var piece = document.getElementById(pieceId);
     var element = document.getElementById(elementId);
@@ -73,6 +94,12 @@ function getOffset(el, center) {
     }
 }
 
+/**
+ * 
+ * @param {Element} startDiv 
+ * @param {Element} endDiv 
+ * @param {string} arrowDivId 
+ */
 function drawArrowBetweenDivs(startDiv, endDiv, arrowDivId) {
     let startDivCoords = getOffset(startDiv, true);
     let endDivCords = getOffset(endDiv, true);
@@ -81,6 +108,10 @@ function drawArrowBetweenDivs(startDiv, endDiv, arrowDivId) {
     arrow.y1.baseVal.value = startDivCoords.top;
     arrow.x2.baseVal.value = endDivCords.left;
     arrow.y2.baseVal.value = endDivCords.top;
+}
+
+function getBoardIndex(indexAsString) {
+
 }
 
 

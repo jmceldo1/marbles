@@ -92,7 +92,6 @@ function updateStateBasedOnMove(move) {
             if (piece && element.previousLocation && element.newLocation) {
                 piece.location = element.newLocation;
 
-                //updateBoardArray()
                 let prevIndex = parseInt(element.previousLocation);
                 if (isNaN(prevIndex)) {
                     if ('rh' === element.previousLocation) prevIndex = RED_HOME;
@@ -101,8 +100,10 @@ function updateStateBasedOnMove(move) {
                     if ('bh' === element.previousLocation) prevIndex = BLUE_HOME;
                 }
                 if (!isNaN(prevIndex)) {
-                    console.log("Updating board array with old piece location")
-                    boardArray[prevIndex].piece = null;
+                    if(piece === boardArray[prevIndex].piece){
+                        console.log("Updating board array with old piece location");
+                        boardArray[prevIndex].piece = null;
+                    }
                 }
 
                 let newIndex = parseInt(element.newLocation);
@@ -116,12 +117,8 @@ function updateStateBasedOnMove(move) {
                     console.log("Updating board array with new piece location");
                     boardArray[newIndex].piece = piece;
                 }
-                
             }
-
             //Potentially erase and redraw arrows?
-
-            //Updated Board Array
         });
     }
 
