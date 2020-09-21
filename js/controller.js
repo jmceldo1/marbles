@@ -19,10 +19,7 @@ var pieceMap;
  */
 function init() {
     airconsole = new AirConsole({ "orientation": "portrait" });
-    // var tp = document.getElementById("rp-0").addEventListener("click", pieceListener);
-    // setupPieceListeners(3);
     
-
     /*
     * Checks if this device is part of the active game.
     */
@@ -46,7 +43,6 @@ function init() {
     };
 
     airconsole.onReady = function () {
-        // Observe the 'position' property of the screen
         this.observeCustomProperty(AirConsole.SCREEN, "data", function (new_value, old_value) {
             if (new_value && new_value.state) {
                
@@ -56,9 +52,6 @@ function init() {
                 doc.style.backgroundImage = new_value.state.playedCard;
             }
         });
-
-        //Will Call from here later JAM UNCOMMENT
-        // setBoardBasedOnState();
     };
 
     airconsole.onMessage = function (device_id, data) {
@@ -99,10 +92,6 @@ function init() {
     });
 }
 
-
-
-
-
 /**
  * Tells the screen to deal the paddle of this player.
  * @param amount
@@ -110,7 +99,10 @@ function init() {
 function dealOrMakeMove() {
     if (move) {
         var test = move[0];
-        movePieceToSquare(test.pieceId, test.location);
+        // movePieceToSquare(test.pieceId, test.location);
+        console.log("Sending Move to Screen");
+        console.log(move);
+        airconsole.sendEvent(AirConsole.SCREEN, MOVE, playerMove);
 
 
         move = null;
