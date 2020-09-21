@@ -25,6 +25,7 @@ const BLUE_TURN = 40;
 const SPECIAL_CARDS = ['4', '7', 'jack'];
 const NORMAL_CARDS = ['ace', '2', '3', '5', '6', '8', '9', '10', 'queen'];
 const SPAWN_CARDS = ['king'];
+const HOME_SQUARES = ['rh', 'yh', 'gh', 'bh'];
 
 // var piece = {
 //     id="re-0", //Piece Element ID

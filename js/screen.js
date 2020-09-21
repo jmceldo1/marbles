@@ -85,14 +85,38 @@ function setupConsole() {
 function updateStateBasedOnMove(move) {
     state.playedCard = move.cardUrl;
     let tempMap = new Map(state.pieceMap);
+
     if (move.moves) {
         Array.prototype.map.call(move.moves, element => {
             let piece = tempMap.get(element.pieceId);
-            console.log("Updating piece: ");
-            console.log(piece);
-            if (piece && element.newLocation) {
+            if (piece && element.previousLocation && element.newLocation) {
                 piece.location = element.newLocation;
-                console.log(piece);
+
+                //updateBoardArray()
+                let prevIndex = parseInt(element.previousLocation);
+                if (isNaN(prevIndex)) {
+                    if ('rh' === element.previousLocation) prevIndex = RED_HOME;
+                    if ('yh' === element.previousLocation) prevIndex = YELLOW_HOME;
+                    if ('gh' === element.previousLocation) prevIndex = GREEN_HOME;
+                    if ('bh' === element.previousLocation) prevIndex = BLUE_HOME;
+                }
+                if (!isNaN(prevIndex)) {
+                    console.log("Updating board array with old piece location")
+                    boardArray[prevIndex].piece = null;
+                }
+
+                let newIndex = parseInt(element.newLocation);
+                if (isNaN(newIndex)) {
+                    if ('rh' === element.newLocation) newIndex = RED_HOME;
+                    if ('yh' === element.newLocation) newIndex = YELLOW_HOME;
+                    if ('gh' === element.newLocation) newIndex = GREEN_HOME;
+                    if ('bh' === element.newLocation) newIndex = BLUE_HOME;
+                }
+                if (!isNaN(newIndex)) {
+                    console.log("Updating board array with new piece location");
+                    boardArray[newIndex].piece = piece;
+                }
+                
             }
 
             //Potentially erase and redraw arrows?

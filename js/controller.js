@@ -11,6 +11,7 @@ var movePiece;
 var moveSquare;
 var playerMove;
 
+var boardArray;
 var pieceMap;
 
 
@@ -19,7 +20,7 @@ var pieceMap;
  */
 function init() {
     airconsole = new AirConsole({ "orientation": "portrait" });
-    
+
     /*
     * Checks if this device is part of the active game.
     */
@@ -45,7 +46,8 @@ function init() {
     airconsole.onReady = function () {
         this.observeCustomProperty(AirConsole.SCREEN, "data", function (new_value, old_value) {
             if (new_value && new_value.state) {
-               
+                console.log(new_value.state);
+                boardArray = new_value.state.boardArray;
                 pieceMap = new Map(new_value.state.pieceMap);
                 setBoardBasedOnState(new_value.state);
                 var doc = document.getElementById("center-square");
@@ -93,8 +95,7 @@ function init() {
 }
 
 /**
- * Tells the screen to deal the paddle of this player.
- * @param amount
+ * 
  */
 function dealOrMakeMove() {
     if (playerMove) {
@@ -102,6 +103,7 @@ function dealOrMakeMove() {
         console.log(playerMove);
         airconsole.sendEvent(AirConsole.SCREEN, MOVE, playerMove);
 
+        //resetLogic
         document.getElementById("actionButton").disabled = true;
         playerMove = null;
 
@@ -130,7 +132,6 @@ function checkAndBuildMove() {
         var cardValueMatcher = card.match(re);
         if (cardValueMatcher) {
             card = cardValueMatcher[1];
-
             if (SPECIAL_CARDS.includes(card)) {
                 console.log("Attempting to handle a Stupid Piece");
             } else if (NORMAL_CARDS.includes(card)) {
@@ -138,22 +139,19 @@ function checkAndBuildMove() {
                 if (movePiece.location.includes("s-") && card === 'ace') {
                     handleSpawnCard(card);
                 }
-
+                handleNormalCard(card);
             } else if (SPAWN_CARDS.includes(card)) {
                 console.log("Attempting to handle a spawn piece");
                 handleSpawnCard(card);
-
             } else {
                 console.log("!!! Unknown Card value: " + card);
             }
-
-
-
         }
-
-
-
     }
+}
+
+function handleNormalCard(card){
+
 }
 
 function handleSpawnCard(card) {
@@ -176,7 +174,7 @@ function handleSpawnCard(card) {
 
     drawArrowBetweenDivs(potentialPiece, square, null);
 
-    let move = createMove(id, null, squareId);
+    let move = createMove(id, "START", squareId);
 
     playerMove = createPlayerMove(card, [move]);
 
@@ -266,7 +264,7 @@ function setCardSizes(selectedId) {
 
 function cardListener(event) {
     if (myTurn) {
-        if (playerMove){
+        if (playerMove) {
             playerMove = null;
             //Potentially want to reset selected piece as well
         }

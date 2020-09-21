@@ -12,12 +12,9 @@ function createMove(pieceId, previousLocation, newLocation) {
 
 function setBoardBasedOnState(state) {
     if(state) {
-        
         let tempMap = new Map(state.pieceMap);
         if(tempMap){
         tempMap.forEach(piece => {
-            console.log("Moving Piece To square")
-            console.log(piece);
             movePieceToSquare(piece.pieceId, piece.location);
         });
     }
@@ -75,18 +72,6 @@ function getOffset(el, center) {
         return { top: _y, left: _x };
     }
 }
-
-var boardArray = [{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
-{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
-{ piece: null }, { piece: null }, { piece: null, home: [{ id: "ye-0", piece: null }, { id: "ye-1", piece: null }, { id: "ye-2", piece: null }, { id: "ye-3", piece: null }] }, { piece: null }, { piece: null },
-{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
-{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
-{ piece: null }, { piece: null, home: [{ id: "ge-0", piece: null }, { id: "ge-1", piece: null }, { id: "ge-2", piece: null }, { id: "ge-3", piece: null }] }, { piece: null }, { piece: null }, { piece: null },
-{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
-{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
-{ piece: null, home: [{ id: "be-0", piece: null }, { id: "be-1", piece: null }, { id: "be-2", piece: null }, { id: "be-3", piece: null }] }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
-{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null },
-{ piece: null }, { piece: null }, { piece: null }, { piece: null }, { piece: null, home: [{ id: "re-0", piece: null }, { id: "re-1", piece: null }, { id: "re-2", piece: null }, { id: "re-3", piece: null }] }, { piece: null }]
 
 function drawArrowBetweenDivs(startDiv, endDiv, arrowDivId) {
     let startDivCoords = getOffset(startDiv, true);
