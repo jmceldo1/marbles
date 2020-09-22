@@ -26,20 +26,3 @@ const SPECIAL_CARDS = ['4', '7', 'jack'];
 const NORMAL_CARDS = ['ace', '2', '3', '5', '6', '8', '9', '10', 'queen'];
 const SPAWN_CARDS = ['king'];
 const HOME_SQUARES = ['rh', 'yh', 'gh', 'bh'];
-
-// var piece = {
-//     id="re-0", //Piece Element ID
-//     position: "33", //Game Board Element ID
-// }
-
-// //
-// var playerMove = {
-//     card: "card", //Last Card played (Already done)
-//     piecesMoved = [PieceMoves]
-// }
-
-// var pieceMoves = {
-//     pieceId: "",
-//     previousLocation,
-//     newLocation,
-// }

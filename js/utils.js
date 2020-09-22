@@ -26,6 +26,18 @@ function createMove(pieceId, previousLocation, newLocation) {
     return { pieceId: pieceId, previousLocation: previousLocation, newLocation: newLocation };
 }
 
+function createSendToStartMove(piece){
+    let startLocation = piece.pieceId.replace('p','s');
+    // if (piece.pieceId.includes("rp-")){
+    //     startLocation = piece.pieceId.replace('p','s');
+    // }
+
+   if(startLocation){
+       return(createMove(piece.pieceId, piece.location, startLocation));
+   }
+
+}
+
 function setBoardBasedOnState(state) {
     if(state) {
         let tempMap = new Map(state.pieceMap);

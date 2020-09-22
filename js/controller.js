@@ -137,13 +137,13 @@ function checkAndBuildMove() {
             } else if (NORMAL_CARDS.includes(card)) {
                 console.log("Attempting to handle a normal piece");
                 if (movePiece.location.includes("s-") && card === 'ace') {
-                    handleSpawnCard(card, cardUrl);
+                    handleSpawnCard(cardUrl);
                 }else {
                     handleNormalCard(card, cardUrl);
                 }
             } else if (SPAWN_CARDS.includes(card)) {
                 console.log("Attempting to handle a spawn piece");
-                handleSpawnCard(card, cardUrl);
+                handleSpawnCard(cardUrl);
             } else {
                 console.log("!!! Unknown Card value: " + card);
             }
@@ -173,15 +173,20 @@ function handleNormalCard(card, cardUrl){
                 //if piece there send home
             }
             let newIndexAsString = getBoardIdFromIndex(newIndex);
-            let move = createMove(pieceFromMap.pieceId, pieceFromMap.location, newIndexAsString);
+            let existingPiece = checkForPieceCollision(newIndex);
+            let moves =[];
+            if(existingPiece) {
+                moves.push(createSendToStartMove(existingPiece));
+            }
+            moves.push(createMove(pieceFromMap.pieceId, pieceFromMap.location, newIndexAsString));
             drawArrowBetweenDivs(document.getElementById(pieceFromMap.pieceId), document.getElementById(newIndexAsString));
-            playerMove = createPlayerMove(cardUrl, [move]);
+            playerMove = createPlayerMove(cardUrl, moves);
 
         }
     }
 }
 
-function handleSpawnCard(card, cardUrl) {
+function handleSpawnCard(cardUrl) {
     let id = movePiece.pieceId;
     let potentialPiece = document.getElementById(id);
     let square;
@@ -207,6 +212,13 @@ function handleSpawnCard(card, cardUrl) {
 
 }
 
+function checkForPieceCollision(boardSquareIndex) {
+    let result;
+    if(boardArray[boardSquareIndex] && boardArray[boardSquareIndex].piece) {
+        result = boardArray[boardSquareIndex].piece;
+    }
+    return result;
+}
 
 // ************************
 //  Listners
