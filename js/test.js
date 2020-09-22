@@ -21,4 +21,4 @@
 
 //   let num = new Number(123);
 //   console.log(num);
-console.log("test")
+console.log(57%56);

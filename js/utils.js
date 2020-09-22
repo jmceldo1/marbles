@@ -110,8 +110,34 @@ function drawArrowBetweenDivs(startDiv, endDiv, arrowDivId) {
     arrow.y2.baseVal.value = endDivCords.top;
 }
 
+/**
+ * 
+ * @param {string} indexAsString 
+ * @returns {number} Returns index or NaN if invalid
+ */
 function getBoardIndex(indexAsString) {
+    let index = parseInt(indexAsString);
+    if(isNaN(index)){
+        if('rh' === indexAsString) index = RED_HOME;
+        if('yh' === indexAsString) index = YELLOW_HOME;
+        if('gh' === indexAsString) index = GREEN_HOME;
+        if('bh' === indexAsString) index = BLUE_HOME;
+    }
+    console.log("Index is NaN: " + indexAsString);
+    return index;
+}
 
+function getBoardIdFromIndex(index) {
+    let indexAsString;
+    if(index === RED_HOME) indexAsString = 'rh';
+    if(index === YELLOW_HOME) indexAsString = 'yh';
+    if(index === GREEN_HOME) indexAsString = 'gh';
+    if(index === BLUE_HOME) indexAsString = 'bh';
+
+    if(!indexAsString) {
+        indexAsString = index+'';
+    }
+    return indexAsString;
 }
 
 

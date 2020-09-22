@@ -128,21 +128,22 @@ function dealOrMakeMove() {
 
 function checkAndBuildMove() {
     if (moveCard && movePiece) {
-        var card = getCardValueFromElement();
-        var cardValueMatcher = card.match(re);
+        let cardUrl = getCardValueFromElement();
+        var cardValueMatcher = cardUrl.match(re);
         if (cardValueMatcher) {
-            card = cardValueMatcher[1];
+            let card = cardValueMatcher[1];
             if (SPECIAL_CARDS.includes(card)) {
                 console.log("Attempting to handle a Stupid Piece");
             } else if (NORMAL_CARDS.includes(card)) {
                 console.log("Attempting to handle a normal piece");
                 if (movePiece.location.includes("s-") && card === 'ace') {
-                    handleSpawnCard(card);
+                    handleSpawnCard(card, cardUrl);
+                }else {
+                    handleNormalCard(card, cardUrl);
                 }
-                handleNormalCard(card);
             } else if (SPAWN_CARDS.includes(card)) {
                 console.log("Attempting to handle a spawn piece");
-                handleSpawnCard(card);
+                handleSpawnCard(card, cardUrl);
             } else {
                 console.log("!!! Unknown Card value: " + card);
             }
@@ -150,11 +151,37 @@ function checkAndBuildMove() {
     }
 }
 
-function handleNormalCard(card){
+function handleNormalCard(card, cardUrl){
+    let cardNumberValue = parseInt(card);
+    if(isNaN(cardNumberValue)){
+        if (card === 'ace') cardNumberValue = 1;
+        if (card === 'queen') cardNumberValue = 12;
+    }
+    if(!isNaN(cardNumberValue)) {
+        let pieceFromMap = pieceMap.get(movePiece.pieceId);
+        if (pieceFromMap) {
+            let currentIndex = getBoardIndex(pieceFromMap.location);
+            let newIndex;
+            for(i = currentIndex; i<currentIndex+cardNumberValue; i++) {
+                //Check if home piece with blocker
+                
+                //If turn in...turn in
 
+                //determina final square
+                newIndex = (currentIndex + cardNumberValue) %56;
+
+                //if piece there send home
+            }
+            let newIndexAsString = getBoardIdFromIndex(newIndex);
+            let move = createMove(pieceFromMap.pieceId, pieceFromMap.location, newIndexAsString);
+            drawArrowBetweenDivs(document.getElementById(pieceFromMap.pieceId), document.getElementById(newIndexAsString));
+            playerMove = createPlayerMove(cardUrl, [move]);
+
+        }
+    }
 }
 
-function handleSpawnCard(card) {
+function handleSpawnCard(card, cardUrl) {
     let id = movePiece.pieceId;
     let potentialPiece = document.getElementById(id);
     let square;
@@ -176,7 +203,7 @@ function handleSpawnCard(card) {
 
     let move = createMove(id, "START", squareId);
 
-    playerMove = createPlayerMove(card, [move]);
+    playerMove = createPlayerMove(cardUrl, [move]);
 
 }
 

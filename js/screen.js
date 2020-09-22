@@ -92,13 +92,7 @@ function updateStateBasedOnMove(move) {
             if (piece && element.previousLocation && element.newLocation) {
                 piece.location = element.newLocation;
 
-                let prevIndex = parseInt(element.previousLocation);
-                if (isNaN(prevIndex)) {
-                    if ('rh' === element.previousLocation) prevIndex = RED_HOME;
-                    if ('yh' === element.previousLocation) prevIndex = YELLOW_HOME;
-                    if ('gh' === element.previousLocation) prevIndex = GREEN_HOME;
-                    if ('bh' === element.previousLocation) prevIndex = BLUE_HOME;
-                }
+                let prevIndex = getBoardIndex(element.previousLocation)
                 if (!isNaN(prevIndex)) {
                     if(piece === boardArray[prevIndex].piece){
                         console.log("Updating board array with old piece location");
@@ -106,13 +100,7 @@ function updateStateBasedOnMove(move) {
                     }
                 }
 
-                let newIndex = parseInt(element.newLocation);
-                if (isNaN(newIndex)) {
-                    if ('rh' === element.newLocation) newIndex = RED_HOME;
-                    if ('yh' === element.newLocation) newIndex = YELLOW_HOME;
-                    if ('gh' === element.newLocation) newIndex = GREEN_HOME;
-                    if ('bh' === element.newLocation) newIndex = BLUE_HOME;
-                }
+                let newIndex = getBoardIndex(element.newLocation);
                 if (!isNaN(newIndex)) {
                     console.log("Updating board array with new piece location");
                     boardArray[newIndex].piece = piece;
