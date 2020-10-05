@@ -16,6 +16,7 @@ const RED_HOME = 0;
 const YELLOW_HOME = 14;
 const GREEN_HOME = 28;
 const BLUE_HOME = 42;
+const HOME_SQUARE_INDEXES = [0, 14, 28, 42];
 
 const RED_TURN = 54;
 const YELLOW_TURN = 12;

@@ -162,12 +162,21 @@ function handleNormalCard(card, cardUrl){
         if (pieceFromMap) {
             let currentIndex = getBoardIndex(pieceFromMap.location);
             let newIndex;
-            for(i = currentIndex; i<currentIndex+cardNumberValue; i++) {
+            for(i = currentIndex; i<=currentIndex+cardNumberValue; i++) {
                 //Check if home piece with blocker
+                //skip first check
+                if(i !== currentIndex){
+                    if (HOME_SQUARE_INDEXES.includes(i)) {
+                        if(boardArray[i] && boardArray[i].piece && boardArray[i].piece.isBlocker){
+                            //Might need better way around this
+                            return;
+                        }
+                    }
+            }
                 
                 //If turn in...turn in
 
-                //determina final square
+                //determine final square
                 newIndex = (currentIndex + cardNumberValue) %56;
 
                 //if piece there send home
@@ -178,7 +187,7 @@ function handleNormalCard(card, cardUrl){
             if(existingPiece) {
                 moves.push(createSendToStartMove(existingPiece));
             }
-            moves.push(createMove(pieceFromMap.pieceId, pieceFromMap.location, newIndexAsString));
+            moves.push(createMove(pieceFromMap.pieceId, pieceFromMap.location, newIndexAsString, false));
             drawArrowBetweenDivs(document.getElementById(pieceFromMap.pieceId), document.getElementById(newIndexAsString));
             playerMove = createPlayerMove(cardUrl, moves);
 
@@ -206,7 +215,7 @@ function handleSpawnCard(cardUrl) {
 
     drawArrowBetweenDivs(potentialPiece, square, null);
 
-    let move = createMove(id, "START", squareId);
+    let move = createMove(id, "START", squareId, true);
 
     playerMove = createPlayerMove(cardUrl, [move]);
 

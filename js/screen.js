@@ -105,6 +105,8 @@ function updateStateBasedOnMove(move) {
                     console.log("Updating board array with new piece location");
                     boardArray[newIndex].piece = piece;
                 }
+
+                piece.isBlocker = element.isBlocker;
             }
             //Potentially erase and redraw arrows?
         });

@@ -4,7 +4,7 @@
  * @param {string} location 
  */
 function createPiece(id, location) {
-    return { pieceId: id, location: location };
+    return { pieceId: id, location: location, isBlocker: false };
 }
 
 /**
@@ -22,8 +22,8 @@ function createPlayerMove(card, moves) {
  * @param { string } previousLocation 
  * @param { string } newLocation 
  */
-function createMove(pieceId, previousLocation, newLocation) {
-    return { pieceId: pieceId, previousLocation: previousLocation, newLocation: newLocation };
+function createMove(pieceId, previousLocation, newLocation, isBlocker) {
+    return { pieceId: pieceId, previousLocation: previousLocation, newLocation: newLocation, isBlocker: isBlocker };
 }
 
 function createSendToStartMove(piece){
@@ -33,7 +33,7 @@ function createSendToStartMove(piece){
     // }
 
    if(startLocation){
-       return(createMove(piece.pieceId, piece.location, startLocation));
+       return(createMove(piece.pieceId, piece.location, startLocation, false));
    }
 
 }
