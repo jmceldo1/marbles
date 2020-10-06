@@ -162,7 +162,8 @@ function handleNormalCard(card, cardUrl){
         if (pieceFromMap) {
             let currentIndex = getBoardIndex(pieceFromMap.location);
             let newIndex;
-            for(i = currentIndex; i<=currentIndex+cardNumberValue; i++) {
+            let moveNumber = 0;
+            for(i = currentIndex; i<=currentIndex+cardNumberValue; i++, moveNumber++) {
                 //Check if home piece with blocker
                 //skip first check
                 if(i !== currentIndex){
@@ -172,14 +173,45 @@ function handleNormalCard(card, cardUrl){
                             return;
                         }
                     }
-            }
+                }
                 
                 //If turn in...turn in
+                if(RED_TURN === i && movePiece.pieceId.startsWith('r')) {
+                    let numberOfRemaingMoves = cardNumberValue - moveNumber;
+                    //Make turn
+                    let homeArray = boardArray[RED_TURN].home;
+                    for(x = 0; x<=3 && x <= numberOfRemaingMoves; x++) {
+                        if (homeArray[x].piece) {
+                            return;
+                        }
+                        if (x === numberOfRemaingMoves){
+                            //make move
+                            let endMove = createMove(pieceFromMap.pieceId, pieceFromMap.location, "re-" + x, false)
+                            drawArrowBetweenDivs(document.getElementById(pieceFromMap.pieceId), document.getElementById("re-"+x));
+                            playerMove = createPlayerMove(cardUrl, [endMove]);
+                            return;
+                        }
+                        if (x === 3){
+                            //make move
+
+                            return;
+                        }
+
+                    }
+                }
+                if(YELLOW_TURN === i && movePiece.pieceId.startsWith('y')) {
+                    //Make turn
+                }
+                if(GREEN_TURN === i && movePiece.pieceId.startsWith('g')) {
+                    //Make turn
+                }
+                if(BLUE_TURN === i && movePiece.pieceId.startsWith('b')) {
+                    //Make turn
+                }
 
                 //determine final square
                 newIndex = (currentIndex + cardNumberValue) %56;
 
-                //if piece there send home
             }
             let newIndexAsString = getBoardIdFromIndex(newIndex);
             let existingPiece = checkForPieceCollision(newIndex);
